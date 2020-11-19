@@ -1,12 +1,13 @@
 import React from 'react';
 import Button from './components/Button';
 
-
 function App() {
   return (
-    <>
-    <Button />
-    </>
+    <Button 
+    btnText='Submit'
+    type='submit'
+    onClick={() => console.log('button was clicked')} />
+    
   );
 }
 
