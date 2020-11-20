@@ -7,8 +7,6 @@ const CreateTodo = ( {addTodo} ) => {
 
     const handleSubmit = (event) =>{
       event.preventDefault();
-      //const userInput = addNewTodo;
-      //addTodo({userInput});
       addTodo(addNewTodo)
       setAddNewTodo('');
     }
@@ -18,9 +16,9 @@ const CreateTodo = ( {addTodo} ) => {
     }
 
     return(   
-        <form>
-          <input type ="text" value={addNewTodo} onChange={handleChange} />
-          <Button btnText='Add Todo' type='submit' onClick={handleSubmit}/>
+        <form onSubmit={handleSubmit}>
+          <input type ="text" value={addNewTodo} onChange={handleChange} required/>
+          <Button btnText='Add Todo' type='submit'/>
         </form>
     )
 
