@@ -3,23 +3,23 @@ import Button from './Button';
 
 const CreateTodo = ( {addTodo} ) => {
 
-    const [addNewTodo, setAddNewTodo] = useState('');
-
+    const [value, setValue] = useState();
+    
     const handleSubmit = (event) =>{
       event.preventDefault();
-      addTodo(addNewTodo)
-      setAddNewTodo('');
+      addTodo(value);
+      setValue('');
     }
 
     const handleChange = (event) =>{
-      setAddNewTodo(event.currentTarget.value);
+      setValue(event.currentTarget.value);
     }
 
     return(   
-        <form onSubmit={handleSubmit}>
-          <input type ="text" value={addNewTodo} onChange={handleChange} required/>
-          <Button btnText='Add Todo' type='submit'/>
-        </form>
+      <form onSubmit={handleSubmit}>
+        <input type ="text" value={value} onChange={handleChange}/>
+        <Button btnText='Add Todo' type='submit'/>
+      </form>
     )
 
 }

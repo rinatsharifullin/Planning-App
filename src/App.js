@@ -5,8 +5,8 @@ function App() {
 
   const [todos, setTodos] = useState([]);
 
-  const handleAddTodo = (addNewTodo) => {
-    setTodos([...todos, addNewTodo])
+  const handleAddTodo = (value) => {
+    setTodos([...todos, value])
   }
 
   return (
@@ -14,7 +14,7 @@ function App() {
       <h1>Artur's Todo App</h1>
       <CreateTodo addTodo={handleAddTodo}/>
       <ul>
-        {todos.map((todo) => <li>{todo}</li>)}
+        {todos.map((todo, index) => <li key={index}>{todo}</li>)}
       </ul>
     </>
   );
