@@ -3,7 +3,7 @@ import Button from './Button';
 
 const CreateTodo = ( {addTodo} ) => {
 
-    const [value, setValue] = useState();
+    const [value, setValue] = useState('');
     
     const handleSubmit = (event) =>{
       event.preventDefault();
