@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import CreateTodo from './components/CreateTodo';
+import ListTodos from './components/ListTodos';
 
 function App() {
 
@@ -9,13 +10,15 @@ function App() {
     setTodos([...todos, value])
   }
 
+  const handleRemoveTodo = (itemToDel) => {
+    setTodos(todos.filter((todo) => todo !== itemToDel));
+  }
+
   return (
     <>
       <h1>Artur's Todo App</h1>
       <CreateTodo addTodo={handleAddTodo}/>
-      <ul>
-        {todos.map((todo, index) => <li key={index}>{todo}</li>)}
-      </ul>
+      <ListTodos todos={todos} removeTodo={handleRemoveTodo}/>
     </>
   );
 }
