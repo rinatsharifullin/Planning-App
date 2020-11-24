@@ -18,7 +18,7 @@ const CreateTodo = ( {addTodo} ) => {
     return(   
       <form onSubmit={handleSubmit}>
         <input type ="text" value={value} onChange={handleChange}/>
-        <Button btnText='Add Todo' type='submit'/>
+        <Button btnText='Submit' type='submit'/>
       </form>
     )
 
