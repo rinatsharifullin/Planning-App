@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button = ( {btnText, type, onClick} ) =>{
+const Button = ( {btnText, type, onClick}:any ) =>{
   return( 
     <button style={{backgroundColor: btnText === "Submit" ? "#1976d2" : "#dc004e"}}
       type={type}

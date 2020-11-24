@@ -1,17 +1,21 @@
 import React, { useState } from 'react';
 import Button from './Button';
 
-const CreateTodo = ( {addTodo} ) => {
+const CreateTodo = ( {addTodo}:any ) => {
 
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState([]);
     
-    const handleSubmit = (event) =>{
+    const handleSubmit = (event:any) =>{
       event.preventDefault();
-      addTodo(value);
-      setValue('');
+      const todoItem ={
+        id: new Date().getTime(),
+        description: value,
+      };
+      addTodo(todoItem);
+      //setValue("");
     }
 
-    const handleChange = (event) =>{
+    const handleChange = (event:any) =>{
       setValue(event.currentTarget.value);
     }
 

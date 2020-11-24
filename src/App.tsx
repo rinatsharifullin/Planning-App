@@ -2,16 +2,22 @@ import React, { useState } from 'react';
 import CreateTodo from './components/CreateTodo';
 import ListTodos from './components/ListTodos';
 
+export type Todo = {
+  id: number; 
+  description: string
+}
+
 function App() {
 
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  const handleAddTodo = (value) => {
-    setTodos([...todos, value])
+  const handleAddTodo = (todoItem:any) => {
+    setTodos([...todos, todoItem])
+    console.log(todoItem);
   }
 
-  const handleRemoveTodo = (itemToDel) => {
-    setTodos(todos.filter((todo) => todo !== itemToDel));
+  const handleRemoveTodo = (id:number) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
   }
 
   return (
