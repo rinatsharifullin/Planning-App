@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import Button from './Button';
 
 
@@ -6,7 +6,7 @@ const CreateTodo = ( {addTodo}:any ) => {
 
     const [value, setValue] = useState<string>('');
     
-    const handleSubmit = (event:any) =>{
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) =>{
       event.preventDefault();
       const todoItem ={
         id: new Date().getTime(),
@@ -16,7 +16,7 @@ const CreateTodo = ( {addTodo}:any ) => {
       setValue('');
     }
 
-    const handleChange = (event:any) =>{
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) =>{
       setValue(event.currentTarget.value);
     }
 
