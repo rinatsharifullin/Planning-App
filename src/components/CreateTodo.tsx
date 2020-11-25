@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import Button from './Button';
 
+
 const CreateTodo = ( {addTodo}:any ) => {
 
-    const [value, setValue] = useState([]);
+    const [value, setValue] = useState<string>('');
     
     const handleSubmit = (event:any) =>{
       event.preventDefault();
@@ -12,7 +13,7 @@ const CreateTodo = ( {addTodo}:any ) => {
         description: value,
       };
       addTodo(todoItem);
-      //setValue("");
+      setValue('');
     }
 
     const handleChange = (event:any) =>{

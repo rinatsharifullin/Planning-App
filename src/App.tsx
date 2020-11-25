@@ -13,11 +13,10 @@ function App() {
 
   const handleAddTodo = (todoItem:any) => {
     setTodos([...todos, todoItem])
-    console.log(todoItem);
   }
 
-  const handleRemoveTodo = (id:number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  const handleRemoveTodo = (todo) => {
+    setTodos(todos.filter((item) => item.id !== todo.id));
   }
 
   return (
