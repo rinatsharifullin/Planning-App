@@ -11,11 +11,10 @@ const CreateTodo = ({ addTodo }: OuterProps) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const todoItem = {
-      id: new Date().getTime(),
+    addTodo({
+      id: Date.now(),
       description: value,
-    };
-    addTodo(todoItem);
+    });
     setValue("");
   };
 
