@@ -1,12 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import Button from "./Button";
 import { Todo } from "../App";
+import { connect } from "react-redux";
+import addTodoAction from "../actions/todos.actions";
 
-type OuterProps = {
-  addTodo: (todo: Todo) => void;
-};
-
-const CreateTodo = ({ addTodo }: OuterProps) => {
+const CreateTodo = ({ addTodo }) => {
   const [value, setValue] = useState<string>("");
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -30,4 +28,10 @@ const CreateTodo = ({ addTodo }: OuterProps) => {
   );
 };
 
-export default CreateTodo;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addTodo: (todo: Todo) => dispatch(addTodoAction(todo)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(CreateTodo);
