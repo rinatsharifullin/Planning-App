@@ -28,7 +28,6 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  console.log('delete been clicked');
   return {
     removeTodo: (todo: Todo) => dispatch(removeTodoAction(todo.id))
   };
