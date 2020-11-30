@@ -2,7 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import Button from "./Button";
 import { Todo } from "../App";
 import { connect } from "react-redux";
-import addTodoAction from "../actions/todos.actions";
+import { addTodoAction}  from "../actions/todos.actions";
 
 const CreateTodo = ({ addTodo }) => {
   const [value, setValue] = useState<string>("");

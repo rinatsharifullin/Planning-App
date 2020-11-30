@@ -1,10 +1,10 @@
 import React from "react";
 import Button from "./Button";
-import { connect, useDispatch } from "react-redux";
-import removeTodoAction from "../actions/remove.actions";
+import { Todo } from "../App";
+import { connect } from "react-redux";
+import { removeTodoAction } from "../actions/todos.actions";
 
-const ListTodos = ({ todos }) => {
-  let dispatch = useDispatch();
+const ListTodos = ({ todos, removeTodo}) => {
   return (
     <ul>
       {todos.map((todo, id) => (
@@ -13,7 +13,7 @@ const ListTodos = ({ todos }) => {
           <Button
             btnText="Remove"
             type="button"
-            onClick={() => dispatch(removeTodoAction(todo.id))}
+            onClick={() => removeTodo(todo)}
           />
         </li>
       ))}
@@ -27,4 +27,12 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(ListTodos);
+const mapDispatchToProps = (dispatch) => {
+  console.log('delete been clicked');
+  return {
+    removeTodo: (todo: Todo) => dispatch(removeTodoAction(todo.id))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListTodos);
+
