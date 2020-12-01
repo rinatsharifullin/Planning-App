@@ -1,13 +1,10 @@
 import React from "react";
 import Button from "./Button";
 import { Todo } from "../App";
+import { connect } from "react-redux";
+import { removeTodoAction } from "../actions/todos.actions";
 
-type OuterProps = {
-  todos: Todo[];
-  removeTodo: (todo: Todo) => void;
-};
-
-const ListTodos = ({ todos, removeTodo }: OuterProps) => {
+const ListTodos = ({ todos, removeTodo}) => {
   return (
     <ul>
       {todos.map((todo, id) => (
@@ -24,4 +21,17 @@ const ListTodos = ({ todos, removeTodo }: OuterProps) => {
   );
 };
 
-export default ListTodos;
+const mapStateToProps = (state) => {
+  return {
+    todos: state.todos,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    removeTodo: (todo: Todo) => dispatch(removeTodoAction(todo.id))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListTodos);
+
