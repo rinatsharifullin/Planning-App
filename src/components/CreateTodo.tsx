@@ -1,10 +1,15 @@
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent} from "react";
 import Button from "./Button";
 import { Todo } from "../App";
 import { connect } from "react-redux";
 import { addTodoAction}  from "../actions/todos.actions";
+import { bindActionCreators } from "redux";
 
-const CreateTodo = ({ addTodo }) => {
+type InnerProps = MappedDispatch;
+type OuterProps = {};
+type Props = InnerProps & OuterProps;
+
+const CreateTodo = ({ addTodo }: Props) => {
   const [value, setValue] = useState<string>("");
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -28,9 +33,13 @@ const CreateTodo = ({ addTodo }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => {
+type MappedDispatch = {
+  addTodo: (todo: Todo) => void;
+}
+
+const mapDispatchToProps = (dispatch): MappedDispatch => {
   return {
-    addTodo: (todo: Todo) => dispatch(addTodoAction(todo)),
+   addTodo: bindActionCreators(addTodoAction, dispatch)
   };
 };
 

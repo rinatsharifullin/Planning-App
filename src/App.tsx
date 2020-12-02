@@ -8,7 +8,6 @@ export type Todo = {
 };
 
 function App() {
-
   return (
     <>
       <h1>Artur's Todo App</h1>
