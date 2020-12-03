@@ -4,7 +4,11 @@ import { Todo } from "../App";
 import { connect } from "react-redux";
 import { removeTodoAction } from "../actions/todos.actions";
 
-const ListTodos = ({ todos, removeTodo}) => {
+type InnerProps = MappedState & MappedDispatch;
+type OuterProps = {};
+type Props = InnerProps & OuterProps;
+
+const ListTodos = ({ todos, removeTodo }: Props) => {
   return (
     <ul>
       {todos.map((todo, id) => (
@@ -21,17 +25,23 @@ const ListTodos = ({ todos, removeTodo}) => {
   );
 };
 
+type MappedState = ReturnType<typeof mapStateToProps>;
+
 const mapStateToProps = (state) => {
   return {
     todos: state.todos,
   };
 };
 
+type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
+
 const mapDispatchToProps = (dispatch) => {
   return {
-    removeTodo: (todo: Todo) => dispatch(removeTodoAction(todo.id))
+    removeTodo: (todo: Todo) => dispatch(removeTodoAction(todo)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListTodos);
-
+export default connect<MappedState, MappedDispatch, OuterProps>(
+  mapStateToProps,
+  mapDispatchToProps
+)(ListTodos);

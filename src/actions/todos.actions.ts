@@ -5,16 +5,11 @@ const addTodoAction = (todo) => {
   };
 };
 
-const removeTodoAction = (todoId) => {
+const removeTodoAction = (todo) => {
   return {
     type: "DELETE_TODO",
-    payload: todoId,
+    payload: todo.id,
   };
 };
 
-//export default addTodoAction;
-
-export {
-  addTodoAction, 
-  removeTodoAction
-};
+export { addTodoAction, removeTodoAction };
