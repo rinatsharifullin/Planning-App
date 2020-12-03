@@ -1,8 +1,8 @@
-import React, { useState, ChangeEvent, FormEvent} from "react";
+import React, { useState, ChangeEvent, FormEvent, Dispatch} from "react";
 import Button from "./Button";
 import { Todo } from "../App";
 import { connect } from "react-redux";
-import { addTodoAction}  from "../actions/todos.actions";
+import { addTodoAction, AddTodoActionType}  from "../actions/todos.actions";
 
 type InnerProps = MappedDispatch;
 type OuterProps = {};
@@ -34,7 +34,7 @@ const CreateTodo = ({ addTodo }: Props) => {
 
 type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: Dispatch<AddTodoActionType>) => {
   return {
    addTodo: (todo: Todo) => dispatch(addTodoAction(todo)),
   };

@@ -1,3 +1,5 @@
+
+export type AddTodoActionType = ReturnType<typeof addTodoAction>;
 const addTodoAction = (todo) => {
   return {
     type: "ADD_TODO",
@@ -5,6 +7,7 @@ const addTodoAction = (todo) => {
   };
 };
 
+export type RemoveTodoActionType = ReturnType<typeof removeTodoAction>
 const removeTodoAction = (todo) => {
   return {
     type: "DELETE_TODO",
