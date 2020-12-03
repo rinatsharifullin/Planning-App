@@ -40,4 +40,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect<MappedDispatch, Props>(null, mapDispatchToProps)(CreateTodo);
+export default connect<any, MappedDispatch, OuterProps>(null, mapDispatchToProps)(CreateTodo);

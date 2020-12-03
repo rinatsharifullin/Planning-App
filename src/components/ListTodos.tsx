@@ -27,13 +27,13 @@ const ListTodos = ({ todos, removeTodo }: Props) => {
 
 type MappedState = ReturnType<typeof mapStateToProps>;
 
-type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
-
 const mapStateToProps = (state) => {
   return {
     todos: state.todos,
   };
 };
+
+type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
 
 const mapDispatchToProps = (dispatch) => {
   return {
