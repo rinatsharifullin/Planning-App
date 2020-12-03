@@ -3,7 +3,6 @@ import Button from "./Button";
 import { Todo } from "../App";
 import { connect } from "react-redux";
 import { removeTodoAction } from "../actions/todos.actions";
-import { bindActionCreators } from "redux";
 
 type InnerProps = MappedState & MappedDispatch;
 type OuterProps = {};
@@ -26,24 +25,23 @@ const ListTodos = ({ todos, removeTodo }: Props) => {
   );
 };
 
-type MappedState = {
-  todos: Todo[]
-}
+type MappedState = ReturnType<typeof mapStateToProps>;
 
-type MappedDispatch = {
-  removeTodo: (todo: Todo) => void,
-}
+type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
 
-const mapStateToProps= (state): MappedState => {
+const mapStateToProps = (state) => {
   return {
     todos: state.todos,
   };
 };
 
-const mapDispatchToProps = (dispatch): MappedDispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    removeTodo: bindActionCreators(removeTodoAction, dispatch)
+    removeTodo: (todo: Todo) => dispatch(removeTodoAction(todo)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListTodos);
+export default connect<MappedState, MappedDispatch, OuterProps>(
+  mapStateToProps,
+  mapDispatchToProps
+)(ListTodos);

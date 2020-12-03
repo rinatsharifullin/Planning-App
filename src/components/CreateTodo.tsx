@@ -3,7 +3,6 @@ import Button from "./Button";
 import { Todo } from "../App";
 import { connect } from "react-redux";
 import { addTodoAction}  from "../actions/todos.actions";
-import { bindActionCreators } from "redux";
 
 type InnerProps = MappedDispatch;
 type OuterProps = {};
@@ -33,14 +32,12 @@ const CreateTodo = ({ addTodo }: Props) => {
   );
 };
 
-type MappedDispatch = {
-  addTodo: (todo: Todo) => void;
-}
+type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
 
-const mapDispatchToProps = (dispatch): MappedDispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-   addTodo: bindActionCreators(addTodoAction, dispatch)
+   addTodo: (todo: Todo) => dispatch(addTodoAction(todo)),
   };
 };
 
-export default connect(null, mapDispatchToProps)(CreateTodo);
+export default connect<MappedDispatch, Props>(null, mapDispatchToProps)(CreateTodo);
