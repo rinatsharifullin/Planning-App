@@ -1,3 +1,4 @@
+import { AddTodoActionType, RemoveTodoActionType } from "../actions/todos.actions";
 import { Todo } from "../App";
 
 type DefaultState = {
@@ -6,7 +7,9 @@ type DefaultState = {
 
 const defaultState: DefaultState = { todos: [] };
 
-const reducer = (state = defaultState, action) => {
+export type AppState = ReturnType<typeof reducer>;
+
+const reducer = (state = defaultState, action: AddTodoActionType | RemoveTodoActionType) => {
   switch (action.type) {
     case "ADD_TODO": {
       return {
@@ -17,7 +20,7 @@ const reducer = (state = defaultState, action) => {
     case "DELETE_TODO": {
       return {
         ...state,
-        todos: state.todos.filter((todo) => todo.id !== action.payload),
+        todos: state.todos.filter((todo) => todo.id !== action.payload.id),
       };
     }
     default:
