@@ -9,10 +9,10 @@ const addTodoAction = (todo: Todo) => {
 };
 
 export type RemoveTodoActionType = ReturnType<typeof removeTodoAction>;
-const removeTodoAction = (todo) => {
+const removeTodoAction = (todo: Todo) => {
   return {
     type: "DELETE_TODO",
-    payload: todo.id,
+    payload: todo,
   };
 };
 
