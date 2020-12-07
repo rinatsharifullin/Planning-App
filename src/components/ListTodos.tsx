@@ -10,10 +10,17 @@ import {createUseStyles} from 'react-jss';
 const useStyles = createUseStyles({
   todoBox:{
     listStyleType: 'none',
+    width: '100%',
+    margin: ' 0',
+    padding: '0',
   },
   todoItem: {
-    padding: '5px 0',
-    marginBottom: '10px'
+    display: "flex",
+    justifyContent: "space-between",
+    padding: '5px 5px 5px 10px',
+    marginBottom: '10px',
+    backgroundColor: 'white',
+    fontSize: '1.25em'
   }
 })
 

@@ -4,11 +4,12 @@ import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles({
   button: {
-    width: "20%",
+    width: "30%",
     padding: '5px',
     marginLeft: '10px',
     textTransform: 'uppercase',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    borderRadius: '5px'
   },
 
 });

@@ -7,8 +7,14 @@ import { addTodoAction, AddTodoActionType}  from "../actions/todos.actions";
 import {createUseStyles} from 'react-jss';
 
 const useStyles = createUseStyles({
+  inputForm: {
+   width:'100%',
+   marginBottom: '10px',
+  },
   input: {
+    width: '63%',
     padding: '5px',
+    border: 'none'
   }
 })
 
@@ -34,7 +40,7 @@ const CreateTodo = ({ addTodo }: Props) => {
 
   const classes = useStyles();
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={classes.inputForm} onSubmit={handleSubmit}>
       <input className={classes.input} type="text" value={value} onChange={handleChange} />
       <Button btnText="Submit" type="submit" />
     </form>
