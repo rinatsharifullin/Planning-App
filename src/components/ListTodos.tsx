@@ -1,11 +1,11 @@
-import React, { Dispatch } from "react";
+import React, { Dispatch, useEffect } from "react";
 import Button from "./Button";
 import { Todo } from "../App";
 import { connect } from "react-redux";
 import { removeTodoAction, RemoveTodoActionType } from "../actions/todos.actions";
 import { AppState } from "../reducers/todos.reducer";
-
 import {createUseStyles} from 'react-jss';
+import { getTodos } from "../services/todos.services";
 
 const useStyles = createUseStyles({
   todoBox:{
@@ -30,6 +30,7 @@ type OuterProps = {};
 type Props = InnerProps & OuterProps;
 
 const ListTodos = ({ todos, removeTodo }: Props) => {
+  useEffect(()=>{ getTodos() },[])
   const classes = useStyles();
   return (
     <ul className={classes.todoBox}>

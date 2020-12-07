@@ -1,10 +1,11 @@
-import React, { useState, ChangeEvent, FormEvent, Dispatch} from "react";
+import React, { useState, ChangeEvent, FormEvent, Dispatch } from "react";
 import Button from "./Button";
 import { Todo } from "../App";
 import { connect } from "react-redux";
 import { addTodoAction, AddTodoActionType}  from "../actions/todos.actions";
 
 import {createUseStyles} from 'react-jss';
+// import { setTodos } from "../services/todos.services";
 
 const useStyles = createUseStyles({
   inputForm: {
@@ -24,6 +25,7 @@ type Props = InnerProps & OuterProps;
 
 const CreateTodo = ({ addTodo }: Props) => {
   const [value, setValue] = useState<string>("");
+  // useEffect(()=>{ setTodos() },[])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
