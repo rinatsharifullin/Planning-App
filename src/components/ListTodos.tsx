@@ -5,15 +5,36 @@ import { connect } from "react-redux";
 import { removeTodoAction, RemoveTodoActionType } from "../actions/todos.actions";
 import { AppState } from "../reducers/todos.reducer";
 
+import {createUseStyles} from 'react-jss';
+
+const useStyles = createUseStyles({
+  todoBox:{
+    listStyleType: 'none',
+    width: '100%',
+    margin: ' 0',
+    padding: '0',
+  },
+  todoItem: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: '5px 5px 5px 10px',
+    marginBottom: '10px',
+    backgroundColor: 'white',
+    fontSize: '1.25em'
+  }
+})
+
+
 type InnerProps = MappedState & MappedDispatch;
 type OuterProps = {};
 type Props = InnerProps & OuterProps;
 
 const ListTodos = ({ todos, removeTodo }: Props) => {
+  const classes = useStyles();
   return (
-    <ul>
+    <ul className={classes.todoBox}>
       {todos.map((todo, id) => (
-        <li key={id}>
+        <li key={id} className={classes.todoItem}>
           {todo.description}
           <Button
             btnText="Remove"

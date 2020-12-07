@@ -4,6 +4,20 @@ import { Todo } from "../App";
 import { connect } from "react-redux";
 import { addTodoAction, AddTodoActionType}  from "../actions/todos.actions";
 
+import {createUseStyles} from 'react-jss';
+
+const useStyles = createUseStyles({
+  inputForm: {
+   width:'100%',
+   marginBottom: '10px',
+  },
+  input: {
+    width: '63%',
+    padding: '5px',
+    border: 'none'
+  }
+})
+
 type InnerProps = MappedDispatch;
 type OuterProps = {};
 type Props = InnerProps & OuterProps;
@@ -24,9 +38,10 @@ const CreateTodo = ({ addTodo }: Props) => {
     setValue(event.currentTarget.value);
   };
 
+  const classes = useStyles();
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" value={value} onChange={handleChange} />
+    <form className={classes.inputForm} onSubmit={handleSubmit}>
+      <input className={classes.input} type="text" value={value} onChange={handleChange} />
       <Button btnText="Submit" type="submit" />
     </form>
   );
