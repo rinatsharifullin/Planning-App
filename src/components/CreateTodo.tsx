@@ -3,6 +3,7 @@ import React, {
   ChangeEvent,
   FormEvent,
   Dispatch,
+  useEffect,
 } from "react";
 import Button from "./Button";
 import { Todo } from "../App";
@@ -10,6 +11,7 @@ import { connect } from "react-redux";
 import { addTodoAction, AddTodoActionType } from "../actions/todos.actions";
 
 import { createUseStyles } from "react-jss";
+import { setTodo } from "../services/todos.services";
 
 const useStyles = createUseStyles({
   inputForm: {
@@ -28,6 +30,12 @@ type OuterProps = {};
 type Props = InnerProps & OuterProps;
 
 const CreateTodo = ({ addTodo }: Props) => {
+
+  useEffect(() => {
+    setTodo({id: 3333,
+      description: 'Arturs Todo'});
+  }, []);
+
   const [value, setValue] = useState<string>("");
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -37,7 +45,6 @@ const CreateTodo = ({ addTodo }: Props) => {
       description: value,
     });
     setValue("");
-   
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -61,10 +68,8 @@ const CreateTodo = ({ addTodo }: Props) => {
 type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
 
 const mapDispatchToProps = (dispatch: Dispatch<AddTodoActionType>) => {
-  
   return {
     addTodo: (todo: Todo) => dispatch(addTodoAction(todo)),
-    
   };
 };
 

@@ -8,7 +8,7 @@ import {
 } from "../actions/todos.actions";
 import { AppState } from "../reducers/todos.reducer";
 import { createUseStyles } from "react-jss";
-import { getTodos } from "../services/todos.services";
+import { getTodos, removeTodoApi } from "../services/todos.services";
 
 const useStyles = createUseStyles({
   todoBox: {
@@ -34,6 +34,9 @@ type Props = InnerProps & OuterProps;
 const ListTodos = ({ todos, removeTodo }: Props) => {
   useEffect(() => {
     getTodos();
+  }, []);
+  useEffect(() => {
+    removeTodoApi({id: 3333});
   }, []);
   const classes = useStyles();
   return (
