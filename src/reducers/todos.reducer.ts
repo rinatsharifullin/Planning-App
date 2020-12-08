@@ -1,8 +1,7 @@
-// import {
-//   AddTodoActionType,
-//   RemoveTodoActionType,
-//  SetTodosActionType
-// } from "../actions/todos.actions";
+import {
+  AddTodoActionType,
+  RemoveTodoActionType,
+} from "../actions/todos.actions";
 import { Todo } from "../App";
 
 type DefaultState = {
@@ -15,8 +14,8 @@ export type AppState = ReturnType<typeof reducer>;
 
 const reducer = (
   state = defaultState,
-  //action: AddTodoActionType | RemoveTodoActionType | SetTodosActionType
-  action : {type: string; payload: any}
+  action: AddTodoActionType | RemoveTodoActionType | {type: string; payload: any}
+  //action : {type: string; payload: any}
 ) => {
   switch (action.type) {
     case "ADD_TODO": {

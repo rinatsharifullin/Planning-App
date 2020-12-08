@@ -34,7 +34,7 @@ type Props = InnerProps & OuterProps;
 const ListTodos = ({ todos, removeTodo, getTodoList }: Props) => {
   useEffect(() => {
     getTodoList(); // this is a reference to a function inside our mapDispatchToProps
-  }, []);
+  }, [getTodoList]);
 
   const classes = useStyles();
   return (

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ThunkDispatch } from "redux-thunk";
 import { setTodosAction } from "../actions/todos.actions";
-//import { Todo } from "../App";
+
 
 const todosApi = axios.create({ baseURL: "http://52.213.105.232:3500/main" });
 
@@ -15,19 +15,6 @@ export const getTodosService = async () => {
   }
 };
 
-// export const setTodo = async (todo: Todo) => {
-//   try {
-//     const response = await todosApi.post("/setTodos", {
-//       id: todo.id,
-//       description: todo.description,
-//     });
-
-//     console.log(response.data.todos);
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-
 export const setTodo = async (todo) => {
   try {
     const response = await todosApi.post("/setTodo", todo);
@@ -37,10 +24,9 @@ export const setTodo = async (todo) => {
   }
 };
 
-// export const removeTodoApi = async (todo:Todo) => {
+
 export const removeTodoApi = async (todo) => {
   try {
-    //const response = await todosApi.post("/removeTodo", { id: todo.id });
     const response = await todosApi.post("/removeTodo", todo);
     console.log(response);
   } catch (e) {
