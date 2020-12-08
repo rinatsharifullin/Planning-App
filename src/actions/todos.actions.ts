@@ -1,5 +1,6 @@
 import { Todo } from "../App";
 
+
 export type AddTodoActionType = ReturnType<typeof addTodoAction>;
 const addTodoAction = (todo: Todo) => {
   return {
@@ -16,4 +17,12 @@ const removeTodoAction = (todo: Todo) => {
   };
 };
 
-export { addTodoAction, removeTodoAction };
+//export type SetTodosActionType = ReturnType<typeof setTodosAction >;
+const setTodosAction  = (todo: Todo[]) => {
+  return {
+    type: "SET_TODOS",
+    payload: todo,
+  };
+};
+
+export { addTodoAction, removeTodoAction, setTodosAction };
