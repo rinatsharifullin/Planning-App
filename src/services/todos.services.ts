@@ -27,9 +27,9 @@ export const setTodoService = async (todo: Todo) => {
   }
 };
 
-export const removeTodoApiService = async (todo: Todo) => {
+export const removeTodoApiService = async (id) => {
   try {
-    const response = await todosApi.post("/removeTodo", todo);
+    const response = await todosApi.post("/removeTodo", id);
     console.log(response);
   } catch (e) {
     console.log(e);
