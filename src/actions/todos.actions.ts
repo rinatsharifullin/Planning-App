@@ -1,7 +1,6 @@
 import { ThunkDispatch } from "redux-thunk";
 import { Todo } from "../App";
-import { getTodosService } from "../services/todos.services";
-
+import { getTodosService, setTodoService } from "../services/todos.services";
 
 export type AddTodoActionType = ReturnType<typeof addTodoAction>;
 const addTodoAction = (todo: Todo) => {
@@ -20,7 +19,7 @@ const removeTodoAction = (todo: Todo) => {
 };
 
 //export type SetTodosActionType = ReturnType<typeof setTodosAction >;
-const setTodosAction  = (todo: Todo[]) => {
+const setTodosAction = (todo: Todo) => {
   return {
     type: "SET_TODOS",
     payload: todo,
@@ -29,13 +28,24 @@ const setTodosAction  = (todo: Todo[]) => {
 
 const getTodos = () => {
   return async (dispatch: ThunkDispatch<any, any, any>) => {
-      try {
-          const response = await getTodosService(); // connect to the service
-          dispatch(setTodosAction(response)) // dispatch th response (list of todos)
-      } catch (e) {
-          console.log(e);
-      }
-    };
+    try {
+      const response = await getTodosService(); // connect to the service
+      dispatch(setTodosAction(response)); // dispatch the response (list of todos)
+    } catch (e) {
+      console.log(e);
+    }
   };
+};
 
-export { addTodoAction, removeTodoAction, setTodosAction, getTodos };
+const setTodo = (todo: Todo) => {
+  return async (dispatch: ThunkDispatch<any, any, any>) => {
+    try {
+      await setTodoService(todo);
+      dispatch(addTodoAction(todo));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export { addTodoAction, removeTodoAction, setTodosAction, getTodos, setTodo };

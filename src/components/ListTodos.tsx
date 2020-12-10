@@ -35,6 +35,7 @@ type Props = InnerProps & OuterProps;
 const ListTodos = ({ todos, removeTodo, getTodoList }: Props) => {
   useEffect(() => {
     getTodoList(); // this is a reference to a function inside our mapDispatchToProps
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const classes = useStyles();
@@ -66,11 +67,11 @@ type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, any>) => {
   return {
-    removeTodo: (todo: Todo) => dispatch(removeTodoAction(todo)),
     getTodoList: () => dispatch(getTodos()),
+    removeTodo: (todo: Todo) => dispatch(removeTodoAction(todo)),
+
   };
 };
-
 
 export default connect<MappedState, MappedDispatch, OuterProps, AppState>(
   mapStateToProps,
