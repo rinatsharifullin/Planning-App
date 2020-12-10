@@ -2,8 +2,7 @@ import React, {
   useState,
   ChangeEvent,
   FormEvent,
-  Dispatch,
-  useEffect,
+  Dispatch
 } from "react";
 import Button from "./Button";
 import { Todo } from "../App";
@@ -11,7 +10,6 @@ import { connect } from "react-redux";
 import { addTodoAction, AddTodoActionType } from "../actions/todos.actions";
 
 import { createUseStyles } from "react-jss";
-import { setTodo } from "../services/todos.services";
 
 const useStyles = createUseStyles({
   inputForm: {
@@ -30,11 +28,6 @@ type OuterProps = {};
 type Props = InnerProps & OuterProps;
 
 const CreateTodo = ({ addTodo }: Props) => {
-
-  useEffect(() => {
-    setTodo({id: 3333,
-      description: 'Arturs Todo'});
-  }, []);
 
   const [value, setValue] = useState<string>("");
 

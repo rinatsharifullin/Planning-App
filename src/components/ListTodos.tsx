@@ -1,14 +1,15 @@
-import React, { Dispatch, useEffect } from "react";
+import React, { useEffect } from "react";
 import Button from "./Button";
 import { Todo } from "../App";
 import { connect } from "react-redux";
 import {
+  getTodos,
   removeTodoAction,
-  RemoveTodoActionType,
 } from "../actions/todos.actions";
 import { AppState } from "../reducers/todos.reducer";
 import { createUseStyles } from "react-jss";
-import { getTodos, removeTodoApi } from "../services/todos.services";
+import { ThunkDispatch } from "redux-thunk";
+
 
 const useStyles = createUseStyles({
   todoBox: {
@@ -31,13 +32,11 @@ type InnerProps = MappedState & MappedDispatch;
 type OuterProps = {};
 type Props = InnerProps & OuterProps;
 
-const ListTodos = ({ todos, removeTodo }: Props) => {
+const ListTodos = ({ todos, removeTodo, getTodoList }: Props) => {
   useEffect(() => {
-    getTodos();
+    getTodoList(); // this is a reference to a function inside our mapDispatchToProps
   }, []);
-  useEffect(() => {
-    removeTodoApi({id: 3333});
-  }, []);
+
   const classes = useStyles();
   return (
     <ul className={classes.todoBox}>
@@ -65,11 +64,13 @@ const mapStateToProps = (state: AppState) => {
 
 type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
 
-const mapDispatchToProps = (dispatch: Dispatch<RemoveTodoActionType>) => {
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, any>) => {
   return {
     removeTodo: (todo: Todo) => dispatch(removeTodoAction(todo)),
+    getTodoList: () => dispatch(getTodos()),
   };
 };
+
 
 export default connect<MappedState, MappedDispatch, OuterProps, AppState>(
   mapStateToProps,
