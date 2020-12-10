@@ -1,6 +1,6 @@
 import { ThunkDispatch } from "redux-thunk";
 import { Todo } from "../App";
-import { getTodosService, setTodoService } from "../services/todos.services";
+import { getTodosService, removeTodoApiService, setTodoService } from "../services/todos.services";
 
 export type AddTodoActionType = ReturnType<typeof addTodoAction>;
 const addTodoAction = (todo: Todo) => {
@@ -48,4 +48,15 @@ const setTodo = (todo: Todo) => {
   };
 };
 
-export { addTodoAction, removeTodoAction, setTodosAction, getTodos, setTodo };
+const removeTodoApi = (todo: Todo) => {
+  return async (dispatch: ThunkDispatch<any, any, any>) => {
+    try {
+      await removeTodoApiService(todo);
+      dispatch(removeTodoAction(todo));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export { addTodoAction, removeTodoAction, setTodosAction, getTodos, setTodo, removeTodoApi };

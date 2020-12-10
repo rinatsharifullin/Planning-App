@@ -4,7 +4,7 @@ import { Todo } from "../App";
 import { connect } from "react-redux";
 import {
   getTodos,
-  removeTodoAction,
+  removeTodoApi,
 } from "../actions/todos.actions";
 import { AppState } from "../reducers/todos.reducer";
 import { createUseStyles } from "react-jss";
@@ -68,7 +68,7 @@ type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, any>) => {
   return {
     getTodoList: () => dispatch(getTodos()),
-    removeTodo: (todo: Todo) => dispatch(removeTodoAction(todo)),
+    removeTodo: (todo: Todo) => dispatch(removeTodoApi(todo)),
 
   };
 };
