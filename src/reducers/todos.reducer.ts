@@ -26,7 +26,7 @@ const reducer = (
     case "DELETE_TODO": {
       return {
         ...state,
-        todos: state.todos.filter((todo) => todo.id !== action.payload.id),
+        todos: state.todos.filter((todo) => todo.id !== action.payload),
       };
     }
     default:

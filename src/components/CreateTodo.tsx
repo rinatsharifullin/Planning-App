@@ -1,15 +1,10 @@
-import React, {
-  useState,
-  ChangeEvent,
-  FormEvent,
-  Dispatch
-} from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import Button from "./Button";
-import { Todo } from "../App";
 import { connect } from "react-redux";
-import { addTodoAction, AddTodoActionType } from "../actions/todos.actions";
+import {  setTodo } from "../actions/todos.actions";
 
 import { createUseStyles } from "react-jss";
+import { ThunkDispatch } from "redux-thunk";
 
 const useStyles = createUseStyles({
   inputForm: {
@@ -33,11 +28,16 @@ const CreateTodo = ({ addTodo }: Props) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    addTodo({
-      id: Date.now(),
-      description: value,
-    });
-    setValue("");
+
+    if (!value) {
+      return;
+    } else {
+      addTodo({
+        id: Date.now(),
+        description: value,
+      });
+      setValue("");
+    }
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -60,9 +60,10 @@ const CreateTodo = ({ addTodo }: Props) => {
 
 type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
 
-const mapDispatchToProps = (dispatch: Dispatch<AddTodoActionType>) => {
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, any>) => {
   return {
-    addTodo: (todo: Todo) => dispatch(addTodoAction(todo)),
+    addTodo: (todo) => dispatch(setTodo(todo))
+  
   };
 };
 
