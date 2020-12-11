@@ -11,10 +11,10 @@ const addTodoAction = (todo: Todo) => {
 };
 
 export type RemoveTodoActionType = ReturnType<typeof removeTodoAction>;
-const removeTodoAction = (todo: Todo) => {
+const removeTodoAction = (id:number) => {
   return {
     type: "DELETE_TODO",
-    payload: todo,
+    payload: id,
   };
 };
 
@@ -48,11 +48,11 @@ const setTodo = (todo: Todo) => {
   };
 };
 
-const removeTodoApi = (todo:Todo) => {
+const removeTodoApi = (id:number) => {
   return async (dispatch: ThunkDispatch<any, any, any>) => {
     try {
-      await removeTodoApiService(todo);
-      dispatch(removeTodoAction(todo));
+      await removeTodoApiService(id);
+      dispatch(removeTodoAction(id));
     } catch (e) {
       console.log(e);
     }

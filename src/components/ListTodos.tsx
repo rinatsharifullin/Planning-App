@@ -46,7 +46,7 @@ const ListTodos = ({ todos, removeTodo, getTodoList }: Props) => {
           <Button
             btnText="Remove"
             type="button"
-            onClick={() => removeTodo(todo)}
+            onClick={() => removeTodo(todo.id)}
           />
         </li>
       ))}
@@ -67,7 +67,7 @@ type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, any>) => {
   return {
     getTodoList: () => dispatch(getTodos()),
-    removeTodo: (id) => dispatch(removeTodoApi(id)),
+    removeTodo: (id:number) => dispatch(removeTodoApi(id)),
 
   };
 };
