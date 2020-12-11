@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import Button from "./Button";
-import { Todo } from "../App";
 import { connect } from "react-redux";
 import {
   getTodos,
@@ -68,7 +67,7 @@ type MappedDispatch = ReturnType<typeof mapDispatchToProps>;
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, any>) => {
   return {
     getTodoList: () => dispatch(getTodos()),
-    removeTodo: (todo: Todo) => dispatch(removeTodoApi(todo)),
+    removeTodo: (id) => dispatch(removeTodoApi(id)),
 
   };
 };

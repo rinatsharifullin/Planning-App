@@ -48,11 +48,11 @@ const setTodo = (todo: Todo) => {
   };
 };
 
-const removeTodoApi = (todo: Todo) => {
+const removeTodoApi = (id) => {
   return async (dispatch: ThunkDispatch<any, any, any>) => {
     try {
-      await removeTodoApiService(todo);
-      dispatch(removeTodoAction(todo));
+      await removeTodoApiService(id);
+      dispatch(removeTodoAction(id));
     } catch (e) {
       console.log(e);
     }
