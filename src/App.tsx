@@ -1,10 +1,5 @@
 import React from 'react';
 
-export type Todo = {
-  id: number;
-  description: string;
-};
-
 function App() {
   return (
     <div>
