@@ -1,11 +1,10 @@
 import React from "react";
-import SingleCard from "./components/Card";
+import { PlanningContainer } from "./components/PlanningContainer";
 
 function App() {
   return (
     <div>
-      <h1>Planning App</h1>
-      <SingleCard />
+      <PlanningContainer />
     </div>
   );
 }

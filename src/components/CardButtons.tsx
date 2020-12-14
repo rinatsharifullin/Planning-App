@@ -4,6 +4,7 @@ import Fab from "@material-ui/core/Fab";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import QueuePlayNextIcon from "@material-ui/icons/QueuePlayNext";
+import InputIcon from "@material-ui/icons/Input";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -11,9 +12,6 @@ const useStyles = makeStyles((theme: Theme) =>
       "& > *": {
         margin: theme.spacing(1),
       },
-    },
-    extendedIcon: {
-      marginRight: theme.spacing(1),
     },
   })
 );
@@ -30,7 +28,7 @@ export default function CardButtons() {
         <DeleteIcon />
       </Fab>
       <Fab size="small" color="default" aria-label="edit">
-        <QueuePlayNextIcon />
+        <InputIcon />
       </Fab>
     </div>
   );
