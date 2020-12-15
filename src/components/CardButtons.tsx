@@ -3,7 +3,6 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import Fab from "@material-ui/core/Fab";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
-import QueuePlayNextIcon from "@material-ui/icons/QueuePlayNext";
 import InputIcon from "@material-ui/icons/Input";
 
 const useStyles = makeStyles((theme: Theme) =>

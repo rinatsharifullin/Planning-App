@@ -1,9 +1,7 @@
-import { Box, Container, Fab, Grid, Typography } from "@material-ui/core";
+import { Box, Container, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import AddEditDialog from "./AddEditDialog";
 import SingleCard from "./SingleCard";
-
-import ModalWindow from "./ModalWindow";
 
 export const PlanningContainer = () => {
   return (
@@ -20,7 +18,7 @@ export const PlanningContainer = () => {
         <AddEditDialog />
 
         <Grid container justify="center" spacing={2}>
-          <Grid item xs={4} justify="center">
+          <Grid item xs={4}>
             <Typography variant="h5">New</Typography>
             <Box mb={1}>
               <SingleCard />
