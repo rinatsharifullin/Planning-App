@@ -1,7 +1,8 @@
 import { Box, Container, Fab, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import SingleCard from "./Card";
-import AddIcon from "@material-ui/icons/Add";
+
+import ModalWindow from "./ModalWindow";
 
 export const PlanningContainer = () => {
   return (
@@ -15,9 +16,7 @@ export const PlanningContainer = () => {
         >
           Planning App
         </Typography>
-        <Fab size="small" color="default" aria-label="edit">
-          <AddIcon />
-        </Fab>
+        <ModalWindow />
 
         <Grid container justify="center" spacing={2}>
           <Grid item xs={4} justify="center">
