@@ -69,7 +69,7 @@ const DialogActions = withStyles((theme: Theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function AddEditDialog() {
+export default function AddEditDialog({ addCard }) {
   const [open, setOpen] = React.useState(false);
   const [textValue, setTextValue] = React.useState("");
   const [dateValue, setDateValue] = React.useState();
@@ -78,6 +78,7 @@ export default function AddEditDialog() {
   };
   const handleClose = () => {
     setOpen(false);
+    addCard(textValue, dateValue);
   };
 
   return (

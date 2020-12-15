@@ -4,6 +4,17 @@ import AddEditDialog from "./AddEditDialog";
 import SingleCard from "./SingleCard";
 
 export const PlanningContainer = () => {
+  const [cards, setCard] = React.useState([
+    {
+      id: "1",
+      description: "Work",
+      status: "new",
+      dueDate: "2020-12-12T00:00",
+    },
+  ]);
+
+  const addNewCard = (textValue, dateValue) => {};
+
   return (
     <>
       <Container maxWidth="md" component="main">
@@ -15,7 +26,7 @@ export const PlanningContainer = () => {
         >
           Planning App
         </Typography>
-        <AddEditDialog />
+        <AddEditDialog addCard={addNewCard} />
 
         <Grid container justify="center" spacing={2}>
           <Grid item xs={4}>
