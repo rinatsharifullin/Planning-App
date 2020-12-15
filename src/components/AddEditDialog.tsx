@@ -71,7 +71,8 @@ const DialogActions = withStyles((theme: Theme) => ({
 
 export default function AddEditDialog() {
   const [open, setOpen] = React.useState(false);
-
+  const [textValue, setTextValue] = React.useState("");
+  const [dateValue, setDateValue] = React.useState();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -99,8 +100,8 @@ export default function AddEditDialog() {
           Add | Edit
         </DialogTitle>
         <DialogContent dividers>
-          <TextFields />
-          <DateTimePicker />
+          <TextFields textValue={(value) => setTextValue(value)} />
+          <DateTimePicker dateValue={(value) => setDateValue(value)} />
         </DialogContent>
         <DialogActions>
           <Button size="small" autoFocus onClick={handleClose} color="primary">

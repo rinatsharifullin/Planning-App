@@ -1,6 +1,8 @@
 import React from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+// import { getTextValue } from "../actions/actions";
+// import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -13,12 +15,13 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function TextFields() {
+export default function TextFields({ textValue }) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
+    textValue(value);
   };
   return (
     <form className={classes.root} noValidate autoComplete="off">
@@ -32,3 +35,11 @@ export default function TextFields() {
     </form>
   );
 }
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     textValue: (value) => dispatch(getTextValue(value)),
+//   };
+// };
+
+// export default connect(null, mapDispatchToProps)(TextFields);
