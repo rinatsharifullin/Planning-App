@@ -21,7 +21,7 @@ export default function TextFields({ textValue }) {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
-    textValue(value);
+    textValue(event.target.value);
   };
   return (
     <form className={classes.root} noValidate autoComplete="off">
@@ -31,6 +31,7 @@ export default function TextFields({ textValue }) {
         multiline
         value={value}
         onChange={handleChange}
+        autoFocus
       />
     </form>
   );
