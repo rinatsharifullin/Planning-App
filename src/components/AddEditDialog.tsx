@@ -99,10 +99,8 @@ export default function AddEditDialog() {
           Add | Edit
         </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom>
-            <TextFields />
-            <DateTimePicker />
-          </Typography>
+          <TextFields />
+          <DateTimePicker />
         </DialogContent>
         <DialogActions>
           <Button size="small" autoFocus onClick={handleClose} color="primary">
