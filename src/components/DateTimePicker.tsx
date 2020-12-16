@@ -16,14 +16,22 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function DateTimePicker() {
+export default function DateTimePicker({ dateValue }) {
   const classes = useStyles();
   //Set default date & time
   var nowDate = new Date().toISOString().slice(0, -8);
+  dateValue(nowDate);
+  const [value, setValue] = React.useState(nowDate);
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    dateValue(value);
+    // console.log(value === "undefined" ? nowDate : value);
+  };
   return (
     <form className={classes.container} noValidate>
       <TextField
+        onChange={handleChange}
         id="datetime-local"
         label="Select Date and Time"
         type="datetime-local"

@@ -5,9 +5,9 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import CardButtons from "./CardButtons";
 
-export default function SingleCard() {
+export default function SingleCard({ backColour }) {
   return (
-    <Card style={{ backgroundColor: "LightSkyBlue" }}>
+    <Card style={{ backgroundColor: backColour }}>
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
           Planned Item

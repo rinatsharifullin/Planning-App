@@ -69,14 +69,16 @@ const DialogActions = withStyles((theme: Theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function AddEditDialog() {
+export default function AddEditDialog({ addCard }) {
   const [open, setOpen] = React.useState(false);
-
+  const [textValue, setTextValue] = React.useState("");
+  const [dateValue, setDateValue] = React.useState();
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    addCard(textValue, dateValue);
   };
 
   return (
@@ -99,8 +101,8 @@ export default function AddEditDialog() {
           Add | Edit
         </DialogTitle>
         <DialogContent dividers>
-          <TextFields />
-          <DateTimePicker />
+          <TextFields textValue={(value) => setTextValue(value)} />
+          <DateTimePicker dateValue={(value) => setDateValue(value)} />
         </DialogContent>
         <DialogActions>
           <Button size="small" autoFocus onClick={handleClose} color="primary">
