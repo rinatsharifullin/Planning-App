@@ -1,4 +1,5 @@
 import { Box, Container, Grid, Typography } from "@material-ui/core";
+import { Console } from "console";
 import React from "react";
 import AddEditDialog from "./AddEditDialog";
 import SingleCard from "./SingleCard";
@@ -32,9 +33,13 @@ export const PlanningContainer = () => {
     textValue = "";
     console.log(cards);
   };
-  function DeleteCard(id) {
+  const DeleteCard = (id) => {
     setCard(cards.filter((item) => item.id !== id));
-  }
+  };
+
+  const EditCard = (id) => {
+    console.log(id);
+  };
   return (
     <>
       <Container maxWidth="md" component="main">
@@ -46,7 +51,7 @@ export const PlanningContainer = () => {
         >
           Planning App
         </Typography>
-        <AddEditDialog addCard={addNewCard} />
+        <AddEditDialog addCard={addNewCard} addNew={true} />
 
         <Grid container justify="center" spacing={2}>
           <Grid item xs={4}>
@@ -62,6 +67,7 @@ export const PlanningContainer = () => {
                       status={item.status}
                       id={item.id}
                       DeleteSingleCard={DeleteCard}
+                      EditSingleCard={EditCard}
                     />
                   </Box>
                 );

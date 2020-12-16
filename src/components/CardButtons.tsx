@@ -4,16 +4,47 @@ import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import InputIcon from "@material-ui/icons/Input";
 import Box from "@material-ui/core/Box";
+import AddEditDialog from "./AddEditDialog";
 
-export default function CardButtons({ DeleteSingleCard, id }) {
+export default function CardButtons({ DeleteSingleCard, id, EditSingleCard }) {
   const DeleteCard = () => {
     DeleteSingleCard(id);
+  };
+  const EditCard = () => {
+    EditSingleCard(id);
+  };
+  const [cards, setCard] = React.useState([
+    {
+      id: "",
+      description: "",
+      status: "",
+      dueDate: "",
+    },
+  ]);
+  const addNewCard = (
+    textValue: string,
+    dateValue: string,
+    id: string,
+    status: string
+  ) => {
+    textValue &&
+      setCard([
+        ...cards,
+        {
+          id: Date.now().toString(),
+          description: textValue,
+          status: "new",
+          dueDate: dateValue,
+        },
+      ]);
+    textValue = "";
+    console.log(cards);
   };
   return (
     <div>
       <Box component="span" m={1}>
-        <Fab size="small" color="primary" aria-label="edit">
-          <EditIcon />
+        <Fab size="small" aria-label="edit" onClick={EditCard} id={id}>
+          <AddEditDialog addCard={addNewCard} addNew={false} />
         </Fab>
       </Box>
       <Box component="span" m={1}>

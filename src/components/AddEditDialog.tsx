@@ -17,6 +17,7 @@ import { Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import TextFields from "./InputField";
 import DateTimePicker from "./DateTimePicker";
+import EditIcon from "@material-ui/icons/Edit";
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -69,7 +70,7 @@ const DialogActions = withStyles((theme: Theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function AddEditDialog({ addCard }) {
+export default function AddEditDialog({ addCard, addNew }) {
   const [open, setOpen] = React.useState(false);
   const [textValue, setTextValue] = React.useState("");
   const [dateValue, setDateValue] = React.useState("");
@@ -89,11 +90,11 @@ export default function AddEditDialog({ addCard }) {
     <div>
       <Fab
         size="small"
-        color="default"
+        color={addNew ? "default" : "primary"}
         aria-label="edit"
         onClick={handleClickOpen}
       >
-        <AddIcon />
+        {addNew ? <AddIcon /> : <EditIcon />}
       </Fab>
 
       <Dialog
@@ -102,7 +103,7 @@ export default function AddEditDialog({ addCard }) {
         open={open}
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Add | Edit
+          {addNew ? "Add" : "Edit"}
         </DialogTitle>
         <DialogContent dividers>
           <TextFields textValue={(value) => setTextValue(value)} />

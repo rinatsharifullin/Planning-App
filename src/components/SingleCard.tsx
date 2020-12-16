@@ -11,10 +11,14 @@ export default function SingleCard({
   dateValue,
   status,
   DeleteSingleCard,
+  EditSingleCard,
   id,
 }) {
   const DeleteCard = () => {
     DeleteSingleCard(id);
+  };
+  const EditCard = () => {
+    EditSingleCard(id);
   };
   return (
     <Card style={{ backgroundColor: backColour }}>
@@ -27,7 +31,11 @@ export default function SingleCard({
         </Typography>
       </CardContent>
       <CardActions>
-        <CardButtons DeleteSingleCard={DeleteCard} id={id} />
+        <CardButtons
+          DeleteSingleCard={DeleteCard}
+          id={id}
+          EditSingleCard={EditCard}
+        />
       </CardActions>
     </Card>
   );
