@@ -5,7 +5,11 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import InputIcon from "@material-ui/icons/Input";
 import Box from "@material-ui/core/Box";
 
-export default function CardButtons() {
+export default function CardButtons({ DeleteSingleCard }) {
+  const DeleteCard = () => {
+    DeleteSingleCard();
+    console.log("From Button");
+  };
   return (
     <div>
       <Box component="span" m={1}>
@@ -14,7 +18,12 @@ export default function CardButtons() {
         </Fab>
       </Box>
       <Box component="span" m={1}>
-        <Fab size="small" color="secondary" aria-label="edit">
+        <Fab
+          size="small"
+          color="secondary"
+          aria-label="edit"
+          onClick={DeleteCard}
+        >
           <DeleteIcon />
         </Fab>
       </Box>
