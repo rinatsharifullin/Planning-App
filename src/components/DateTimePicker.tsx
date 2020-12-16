@@ -26,7 +26,6 @@ export default function DateTimePicker({ dateValue }) {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     dateValue(value);
-    // console.log(value === "undefined" ? nowDate : value);
   };
   return (
     <form className={classes.container} noValidate>

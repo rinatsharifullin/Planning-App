@@ -6,10 +6,10 @@ import SingleCard from "./SingleCard";
 export const PlanningContainer = () => {
   const [cards, setCard] = React.useState([
     {
-      id: "1",
-      description: "Work",
-      status: "new",
-      dueDate: "2020-12-12T00:00",
+      id: "",
+      description: "",
+      status: "",
+      dueDate: "",
     },
   ]);
 
@@ -19,15 +19,17 @@ export const PlanningContainer = () => {
     id: string,
     status: string
   ) => {
-    setCard([
-      ...cards,
-      {
-        id: id,
-        description: textValue,
-        status: status,
-        dueDate: dateValue,
-      },
-    ]);
+    textValue &&
+      setCard([
+        ...cards,
+        {
+          id: Date.now().toString(),
+          description: textValue,
+          status: "new",
+          dueDate: dateValue,
+        },
+      ]);
+    textValue = "";
     console.log(cards);
   };
 
@@ -42,25 +44,23 @@ export const PlanningContainer = () => {
         >
           Planning App
         </Typography>
-        <AddEditDialog
-          id={Date.now().toString()}
-          status="new"
-          addCard={addNewCard}
-        />
+        <AddEditDialog addCard={addNewCard} />
 
         <Grid container justify="center" spacing={2}>
           <Grid item xs={4}>
             <Typography variant="h5">New</Typography>
             {cards.map((item) => {
-              return (
-                <Box mb={1} key={item.id}>
-                  <SingleCard
-                    dateValue={item.dueDate}
-                    textValue={item.description}
-                    backColour="White"
-                  />
-                </Box>
-              );
+              if (item.description)
+                return (
+                  <Box mb={1} key={item.id}>
+                    <SingleCard
+                      dateValue={item.dueDate}
+                      textValue={item.description}
+                      backColour="White"
+                      status={item.status}
+                    />
+                  </Box>
+                );
             })}
           </Grid>
           <Grid item xs={4}>

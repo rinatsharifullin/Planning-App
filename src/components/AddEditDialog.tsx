@@ -69,10 +69,10 @@ const DialogActions = withStyles((theme: Theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function AddEditDialog({ addCard, id, status }) {
+export default function AddEditDialog({ addCard }) {
   const [open, setOpen] = React.useState(false);
   const [textValue, setTextValue] = React.useState("");
-  const [dateValue, setDateValue] = React.useState();
+  const [dateValue, setDateValue] = React.useState("");
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -81,8 +81,7 @@ export default function AddEditDialog({ addCard, id, status }) {
   };
   const handleClick = () => {
     addCard(textValue, dateValue);
-    id = Date.now.toString();
-    status = "new";
+    setTextValue(""); //Prevent same text if create empty card
     setOpen(false);
   };
 

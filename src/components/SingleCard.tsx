@@ -5,7 +5,12 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import CardButtons from "./CardButtons";
 
-export default function SingleCard({ backColour, textValue, dateValue }) {
+export default function SingleCard({
+  backColour,
+  textValue,
+  dateValue,
+  status,
+}) {
   return (
     <Card style={{ backgroundColor: backColour }}>
       <CardContent>
