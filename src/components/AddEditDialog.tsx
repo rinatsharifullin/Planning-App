@@ -78,7 +78,10 @@ export default function AddEditDialog({ addCard }) {
   };
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleClick = () => {
     addCard(textValue, dateValue);
+    setOpen(false);
   };
 
   return (
@@ -105,7 +108,7 @@ export default function AddEditDialog({ addCard }) {
           <DateTimePicker dateValue={(value) => setDateValue(value)} />
         </DialogContent>
         <DialogActions>
-          <Button size="small" autoFocus onClick={handleClose} color="primary">
+          <Button size="small" onClick={handleClick} color="primary">
             Save changes
           </Button>
         </DialogActions>

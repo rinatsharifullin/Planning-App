@@ -13,7 +13,17 @@ export const PlanningContainer = () => {
     },
   ]);
 
-  const addNewCard = (textValue, dateValue) => {};
+  const addNewCard = (textValue: string, dateValue: string) => {
+    setCard([
+      ...cards,
+      {
+        id: "1",
+        description: textValue,
+        status: "new",
+        dueDate: dateValue,
+      },
+    ]);
+  };
 
   return (
     <>
@@ -31,27 +41,23 @@ export const PlanningContainer = () => {
         <Grid container justify="center" spacing={2}>
           <Grid item xs={4}>
             <Typography variant="h5">New</Typography>
-            <Box mb={1}>
-              <SingleCard backColour="White" />
-            </Box>
-            <Box mb={1}>
-              <SingleCard backColour="White" />
-            </Box>
-            <Box mb={1}>
-              <SingleCard backColour="White" />
-            </Box>
+            {cards.map((item) => {
+              return (
+                <Box mb={1} key={Date.now().toString()}>
+                  <SingleCard
+                    dateValue={item.dueDate}
+                    textValue={item.description}
+                    backColour="White"
+                  />
+                </Box>
+              );
+            })}
           </Grid>
           <Grid item xs={4}>
             <Typography variant="h5">In Progress</Typography>
-            <Box mb={1}>
-              <SingleCard backColour="LightGreen" />
-            </Box>
           </Grid>
           <Grid item xs={4}>
             <Typography variant="h5">Finished</Typography>
-            <Box mb={1}>
-              <SingleCard backColour="LightSkyBlue" />
-            </Box>
           </Grid>
         </Grid>
       </Container>

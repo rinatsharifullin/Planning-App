@@ -5,15 +5,15 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import CardButtons from "./CardButtons";
 
-export default function SingleCard({ backColour }) {
+export default function SingleCard({ backColour, textValue, dateValue }) {
   return (
     <Card style={{ backgroundColor: backColour }}>
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
-          Planned Item
+          {textValue}
         </Typography>
         <Typography color="textSecondary" gutterBottom>
-          14/12/2020
+          {dateValue.slice(0, -6) + " " + dateValue.slice(11, 16)}
         </Typography>
       </CardContent>
       <CardActions>
