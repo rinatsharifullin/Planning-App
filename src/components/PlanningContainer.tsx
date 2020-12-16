@@ -13,16 +13,22 @@ export const PlanningContainer = () => {
     },
   ]);
 
-  const addNewCard = (textValue: string, dateValue: string) => {
+  const addNewCard = (
+    textValue: string,
+    dateValue: string,
+    id: string,
+    status: string
+  ) => {
     setCard([
       ...cards,
       {
-        id: "1",
+        id: id,
         description: textValue,
-        status: "new",
+        status: status,
         dueDate: dateValue,
       },
     ]);
+    console.log(cards);
   };
 
   return (
@@ -36,14 +42,18 @@ export const PlanningContainer = () => {
         >
           Planning App
         </Typography>
-        <AddEditDialog addCard={addNewCard} />
+        <AddEditDialog
+          id={Date.now().toString()}
+          status="new"
+          addCard={addNewCard}
+        />
 
         <Grid container justify="center" spacing={2}>
           <Grid item xs={4}>
             <Typography variant="h5">New</Typography>
             {cards.map((item) => {
               return (
-                <Box mb={1} key={Date.now().toString()}>
+                <Box mb={1} key={item.id}>
                   <SingleCard
                     dateValue={item.dueDate}
                     textValue={item.description}
