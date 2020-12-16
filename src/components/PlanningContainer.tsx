@@ -32,9 +32,9 @@ export const PlanningContainer = () => {
     textValue = "";
     console.log(cards);
   };
-  const DeleteCard = (id) => {
-    console.log(id);
-  };
+  function DeleteCard(id) {
+    setCard(cards.filter((item) => item.id !== id));
+  }
   return (
     <>
       <Container maxWidth="md" component="main">
@@ -60,7 +60,8 @@ export const PlanningContainer = () => {
                       textValue={item.description}
                       backColour="White"
                       status={item.status}
-                      DeleteSingleCard={DeleteCard(item.id)}
+                      id={item.id}
+                      DeleteSingleCard={DeleteCard}
                     />
                   </Box>
                 );

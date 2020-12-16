@@ -5,10 +5,9 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import InputIcon from "@material-ui/icons/Input";
 import Box from "@material-ui/core/Box";
 
-export default function CardButtons({ DeleteSingleCard }) {
+export default function CardButtons({ DeleteSingleCard, id }) {
   const DeleteCard = () => {
-    DeleteSingleCard();
-    console.log("From Button");
+    DeleteSingleCard(id);
   };
   return (
     <div>
@@ -23,6 +22,7 @@ export default function CardButtons({ DeleteSingleCard }) {
           color="secondary"
           aria-label="edit"
           onClick={DeleteCard}
+          id={id}
         >
           <DeleteIcon />
         </Fab>
