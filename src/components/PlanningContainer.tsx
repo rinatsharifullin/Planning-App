@@ -32,6 +32,10 @@ export const PlanningContainer = () => {
     textValue = "";
     console.log(cards);
   };
+
+  const updateCard = (textValue: string, dateValue: string) => {
+    console.log(textValue, dateValue);
+  };
   const DeleteCard = (id) => {
     setCard(cards.filter((item) => item.id !== id));
   };
@@ -50,7 +54,7 @@ export const PlanningContainer = () => {
         >
           Planning App
         </Typography>
-        <AddEditDialog addCard={addNewCard} addNew={true} />
+        <AddEditDialog addCard={addNewCard} addNew={true} textFromParent={""} />
 
         <Grid container justify="center" spacing={2}>
           <Grid item xs={4}>
@@ -67,6 +71,9 @@ export const PlanningContainer = () => {
                       id={item.id}
                       DeleteSingleCard={DeleteCard}
                       EditSingleCard={EditCard}
+                      textFromParent={item.description}
+                      updateCard={updateCard}
+                      sendId={}
                     />
                   </Box>
                 );

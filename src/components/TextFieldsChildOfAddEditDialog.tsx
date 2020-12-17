@@ -16,9 +16,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 // textValue function sent text typed to parent
-export default function TextFieldsChildOfDateTimePicker({ textValue }) {
+//textFromParent var initial value when edit text
+export default function TextFieldsChildOfAddEditDialog({
+  textValue,
+  textFromParent,
+}) {
   const classes = useStyles();
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(textFromParent);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);

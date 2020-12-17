@@ -15,7 +15,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import TextFieldsChildOfDateTimePicker from "./TextFieldsChildOfDateTimePicker";
+import TextFieldsChildOfAddEditDialog from "./TextFieldsChildOfAddEditDialog";
 import DateTimePickerChildOfAddEditDialog from "./DateTimePickerChildOfAddEditDialog";
 import EditIcon from "@material-ui/icons/Edit";
 
@@ -69,9 +69,17 @@ const DialogActions = withStyles((theme: Theme) => ({
     padding: theme.spacing(1),
   },
 }))(MuiDialogActions);
+
 // addCard function sent to parent textValue and dateValue to reproduce on single card
 // addNew var receive from parent true or false (edit or create new card)
-export default function AddEditDialog({ addCard, addNew }) {
+//textFromParent var initial value when edit text
+export default function AddEditDialog({
+  addCard,
+  addNew,
+  textFromParent,
+  sendId,
+  receiveId,
+}) {
   const [open, setOpen] = React.useState(false);
   const [textValue, setTextValue] = React.useState("");
   const [dateValue, setDateValue] = React.useState("");
@@ -82,7 +90,8 @@ export default function AddEditDialog({ addCard, addNew }) {
     setOpen(false);
   };
   const handleClick = () => {
-    addCard(textValue, dateValue);
+    addCard(textValue, dateValue, sendId);
+    sendId = receiveId;
     setTextValue(""); //Prevent same text if create empty card
     setOpen(false);
   };
@@ -107,8 +116,9 @@ export default function AddEditDialog({ addCard, addNew }) {
           {addNew ? "Add" : "Edit"}
         </DialogTitle>
         <DialogContent dividers>
-          <TextFieldsChildOfDateTimePicker
+          <TextFieldsChildOfAddEditDialog
             textValue={(value) => setTextValue(value)}
+            textFromParent={textFromParent}
           />
           <DateTimePickerChildOfAddEditDialog
             dateValue={(value) => setDateValue(value)}

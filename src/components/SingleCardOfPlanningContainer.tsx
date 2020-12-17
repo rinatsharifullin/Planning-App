@@ -12,6 +12,7 @@ import CardButtonsChildOfSingleCard from "./CardButtonsChildOfSingleCard";
 // DeleteSingleCard function send to parent instruction of deleted id
 // EditSingleCard function send to parent instruction of edited id
 // id var receive from parent to recognize what delete and edit
+//updateCard function send text and date to parent to update this card
 export default function SingleCardOfPlanningContainer({
   backColour,
   textValue,
@@ -20,6 +21,9 @@ export default function SingleCardOfPlanningContainer({
   DeleteSingleCard,
   EditSingleCard,
   id,
+  textFromParent,
+  updateCard,
+  sendId,
 }) {
   const DeleteCard = () => {
     DeleteSingleCard(id);
@@ -42,6 +46,9 @@ export default function SingleCardOfPlanningContainer({
           DeleteSingleCard={DeleteCard}
           id={id}
           EditSingleCard={EditCard}
+          textFromParent={textFromParent}
+          updateCard={updateCard}
+          sendId={sendId}
         />
       </CardActions>
     </Card>
