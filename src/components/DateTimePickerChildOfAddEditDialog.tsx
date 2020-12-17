@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function DateTimePicker({ dateValue }) {
+// dateValue function send date to parent
+export default function DateTimePickerChildOfAddEditDialog({ dateValue }) {
   const classes = useStyles();
   //Set default date & time
   var nowDate = new Date().toISOString().slice(0, -8);

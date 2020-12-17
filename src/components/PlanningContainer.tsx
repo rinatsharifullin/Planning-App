@@ -2,7 +2,7 @@ import { Box, Container, Grid, Typography } from "@material-ui/core";
 import { Console } from "console";
 import React from "react";
 import AddEditDialog from "./AddEditDialog";
-import SingleCard from "./SingleCard";
+import SingleCard_PlanningContainer from "./SingleCard_PlanningContainer";
 
 export const PlanningContainer = () => {
   const [cards, setCard] = React.useState([
@@ -60,7 +60,7 @@ export const PlanningContainer = () => {
               if (item.description)
                 return (
                   <Box mb={1} key={item.id}>
-                    <SingleCard
+                    <SingleCard_PlanningContainer
                       dateValue={item.dueDate}
                       textValue={item.description}
                       backColour="White"

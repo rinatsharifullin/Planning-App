@@ -15,8 +15,8 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
 import { Fab } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
-import TextFields from "./InputField";
-import DateTimePicker from "./DateTimePicker";
+import TextFieldsChildOfDateTimePicker from "./TextFieldsChildOfDateTimePicker";
+import DateTimePickerChildOfAddEditDialog from "./DateTimePickerChildOfAddEditDialog";
 import EditIcon from "@material-ui/icons/Edit";
 
 const styles = (theme: Theme) =>
@@ -69,7 +69,8 @@ const DialogActions = withStyles((theme: Theme) => ({
     padding: theme.spacing(1),
   },
 }))(MuiDialogActions);
-
+// addCard function sent to parent textValue and dateValue to reproduce on single card
+// addNew var receive from parent true or false (edit or create new card)
 export default function AddEditDialog({ addCard, addNew }) {
   const [open, setOpen] = React.useState(false);
   const [textValue, setTextValue] = React.useState("");
@@ -106,8 +107,12 @@ export default function AddEditDialog({ addCard, addNew }) {
           {addNew ? "Add" : "Edit"}
         </DialogTitle>
         <DialogContent dividers>
-          <TextFields textValue={(value) => setTextValue(value)} />
-          <DateTimePicker dateValue={(value) => setDateValue(value)} />
+          <TextFieldsChildOfDateTimePicker
+            textValue={(value) => setTextValue(value)}
+          />
+          <DateTimePickerChildOfAddEditDialog
+            dateValue={(value) => setDateValue(value)}
+          />
         </DialogContent>
         <DialogActions>
           <Button size="small" onClick={handleClick} color="primary">

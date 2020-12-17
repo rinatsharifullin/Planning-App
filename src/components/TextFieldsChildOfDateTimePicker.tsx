@@ -15,7 +15,8 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function TextFields({ textValue }) {
+// textValue function sent text typed to parent
+export default function TextFieldsChildOfDateTimePicker({ textValue }) {
   const classes = useStyles();
   const [value, setValue] = React.useState("");
 

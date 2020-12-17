@@ -6,7 +6,14 @@ import InputIcon from "@material-ui/icons/Input";
 import Box from "@material-ui/core/Box";
 import AddEditDialog from "./AddEditDialog";
 
-export default function CardButtons({ DeleteSingleCard, id, EditSingleCard }) {
+// DeleteSingleCard function sent id to parent to know what delete
+// id variable to receive from parent id of pressed button card
+// EditSingleCard function send to parent
+export default function CardButtonsChildOfSingleCard({
+  DeleteSingleCard,
+  id,
+  EditSingleCard,
+}) {
   const DeleteCard = () => {
     DeleteSingleCard(id);
   };
