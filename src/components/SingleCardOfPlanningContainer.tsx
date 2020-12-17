@@ -12,7 +12,7 @@ import CardButtonsChildOfSingleCard from "./CardButtonsChildOfSingleCard";
 // DeleteSingleCard function send to parent instruction of deleted id
 // EditSingleCard function send to parent instruction of edited id
 // id var receive from parent to recognize what delete and edit
-export default function SingleCard_PlanningContainer({
+export default function SingleCardOfPlanningContainer({
   backColour,
   textValue,
   dateValue,

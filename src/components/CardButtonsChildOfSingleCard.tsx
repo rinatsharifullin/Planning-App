@@ -1,6 +1,5 @@
 import React from "react";
 import Fab from "@material-ui/core/Fab";
-import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import InputIcon from "@material-ui/icons/Input";
 import Box from "@material-ui/core/Box";
