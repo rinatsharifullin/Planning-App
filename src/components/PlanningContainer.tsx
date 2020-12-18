@@ -54,7 +54,13 @@ export const PlanningContainer = () => {
         >
           Planning App
         </Typography>
-        <AddEditDialog addCard={addNewCard} addNew={true} textFromParent={""} />
+        <AddEditDialog
+          addCard={addNewCard}
+          addNew={true}
+          textFromParent={""}
+          sendId={""}
+          receiveId={""}
+        />
 
         <Grid container justify="center" spacing={2}>
           <Grid item xs={4}>
@@ -73,7 +79,7 @@ export const PlanningContainer = () => {
                       EditSingleCard={EditCard}
                       textFromParent={item.description}
                       updateCard={updateCard}
-                      sendId={}
+                      sendId={item.id}
                     />
                   </Box>
                 );
