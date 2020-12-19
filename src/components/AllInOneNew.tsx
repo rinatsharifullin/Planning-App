@@ -18,14 +18,15 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@material-ui/icons/Add";
 import InputIcon from "@material-ui/icons/Input";
 import DeleteIcon from "@material-ui/icons/Delete";
+import axios from "axios";
 
 export const AllInOneContainer = () => {
-  var nowDate = new Date().toISOString().slice(0, -8);
+  var nowDate = new Date().toISOString().slice(0, 10);
   const [text, setText] = useState("");
   const [date, setDate] = useState(nowDate);
   const [open, setOpen] = React.useState(false);
@@ -35,16 +36,22 @@ export const AllInOneContainer = () => {
   const [Cards, setCards] = useState([
     { id: 0, description: "", status: "", dueDate: "" },
   ]);
-
-  var SingleCard = { id: 123, description: "", status: "", dueDate: "" };
+  type singleCard = {
+    id: number;
+    description: string;
+    status: string;
+    dueDate: string;
+  };
+  var SingleCard: singleCard;
 
   const updateStatusNew = (id) => {
     for (const x in Cards) {
       if (Cards[x].id === id) {
-        console.log(Cards[x].status);
-        if (Cards[x].status === "new") Cards[x].status = "pro";
-
-        break;
+        if (Cards[x].status === "todo") {
+          Cards[x].status = "inProgress";
+          updateTodo(Cards[x]);
+          break;
+        }
       }
     }
     setCards([...Cards]);
@@ -52,10 +59,11 @@ export const AllInOneContainer = () => {
   const updateStatusPro = (id) => {
     for (const x in Cards) {
       if (Cards[x].id === id) {
-        console.log(Cards[x].status);
-
-        if (Cards[x].status === "pro") Cards[x].status = "fin";
-        break;
+        if (Cards[x].status === "inProgress") {
+          Cards[x].status = "completed";
+          updateTodo(Cards[x]);
+          break;
+        }
       }
     }
     setCards([...Cards]);
@@ -64,6 +72,7 @@ export const AllInOneContainer = () => {
   // ---------------------
   const handleOpen = () => {
     setOpen(true);
+    setDate(nowDate);
   };
   const handleClose = () => {
     setText("");
@@ -73,13 +82,14 @@ export const AllInOneContainer = () => {
     SingleCard = {
       id: Date.now(),
       description: text,
-      status: "new",
+      status: "todo",
       dueDate: date,
     };
-    console.log(Cards);
+    setTodo(SingleCard);
     if (text) setCards([...Cards, SingleCard]);
     setText("");
-    setDate(nowDate);
+
+    setDate("");
     setOpen(false);
   };
 
@@ -88,7 +98,7 @@ export const AllInOneContainer = () => {
     for (const x of Cards) {
       if (x.id === id) {
         setText(x.description);
-        setDate(x.dueDate);
+        setDate(x.dueDate.slice(0, 10));
         setIdEdit(x.id);
         setStatusEdit(x.status);
         break;
@@ -105,17 +115,75 @@ export const AllInOneContainer = () => {
   const handleCloseOkEdit = () => {
     for (const x in Cards) {
       if (Cards[x].id === idEdit) {
-        console.log(idEdit);
         Cards[x].description = text;
         Cards[x].dueDate = date;
         break;
       }
     }
-    if (text) setCards(Cards);
+    SingleCard = {
+      id: idEdit,
+      description: text,
+      status: statusEdit,
+      dueDate: date,
+    };
+
+    if (text) {
+      setCards([...Cards]);
+      updateTodo(SingleCard);
+    }
     setText("");
+    setDate("");
     setOpenEdit(false);
   };
   // ---------------------
+
+  //Axios get Cards from server------------------
+  const todosApi = axios.create({
+    baseURL: "http://52.213.105.232:3500/main/",
+  });
+
+  async function getTodoList() {
+    try {
+      const response = await todosApi.get("/getTodos");
+      response.data.todos.sort(
+        (a: { id: number }, b: { id: number }) => a.id - b.id //Sort by date
+      );
+      setCards(response.data.todos);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function setTodo(todo) {
+    try {
+      await todosApi.post("/setTodo", todo);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function updateTodo(todo) {
+    try {
+      await todosApi.post("/updateTodo", todo);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function removeTodo(id) {
+    try {
+      const response = await todosApi.post("/removeTodo", { id });
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  useEffect(() => {
+    getTodoList(); // this is a reference to a function inside our mapDispatchToProps
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  //Axios get Cards from server------------------
+
   //Style----------------------
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -206,10 +274,10 @@ export const AllInOneContainer = () => {
                 <form className={classes.container} noValidate>
                   <TextField
                     onChange={handleChangeDate}
-                    id="datetime-local"
+                    id="date"
                     label="Select Date and Time"
-                    type="datetime-local"
-                    defaultValue={nowDate}
+                    type="date"
+                    defaultValue={date}
                     className={classes.textField}
                     InputLabelProps={{
                       shrink: true,
@@ -234,22 +302,23 @@ export const AllInOneContainer = () => {
       </div>
       {/* //Modal---------------------- */}
       <Grid container justify="center" spacing={2}>
+        {/* New status Column */}
         <Grid item xs={4}>
           <Paper elevation={2}>
             <Box p={1}>
               <Typography variant="h5">New</Typography>
             </Box>
             {/* //Card------------------------ */}
-            {Cards.filter((item) => item.status === "new").map((item) => {
+            {Cards.filter((item) => item.status === "todo").map((item) => {
               if (item.description)
                 return (
                   <Box
                     p={1}
                     key={item.id}
                     bgcolor={
-                      item.status === "pro"
+                      item.status === "inProgress"
                         ? "success.main"
-                        : item.status === "new"
+                        : item.status === "todo"
                         ? "info.main"
                         : "warning.main"
                     }
@@ -265,9 +334,7 @@ export const AllInOneContainer = () => {
                       <CardContent>
                         <Typography variant="h6">{item.description}</Typography>
                         <Typography color="textSecondary">
-                          {item.dueDate.slice(0, -6) +
-                            " " +
-                            item.dueDate.slice(11, 16)}
+                          {item.dueDate.slice(0, 10)}
                         </Typography>
                       </CardContent>
                       <CardActions>
@@ -323,9 +390,9 @@ export const AllInOneContainer = () => {
                                         >
                                           <TextField
                                             onChange={handleChangeDate}
-                                            id="datetime-local"
+                                            id="date"
                                             label="Select Date and Time"
-                                            type="datetime-local"
+                                            type="date"
                                             defaultValue={date}
                                             className={classes.textField}
                                             InputLabelProps={{
@@ -360,13 +427,14 @@ export const AllInOneContainer = () => {
                                 color="secondary"
                                 aria-label="delete"
                                 size="small"
-                                onClick={() =>
+                                onClick={() => {
                                   setCards(
                                     Cards.filter(
                                       (myitem) => myitem.id !== item.id
                                     )
-                                  )
-                                }
+                                  );
+                                  removeTodo(item.id);
+                                }}
                               >
                                 <DeleteIcon />
                               </Fab>
@@ -392,180 +460,185 @@ export const AllInOneContainer = () => {
           </Paper>
         </Grid>
 
+        {/* In Progress Column */}
         <Grid item xs={4}>
           <Paper elevation={2}>
             <Box p={1}>
               <Typography variant="h5">In Progress</Typography>
             </Box>
             {/* //Card------------------------ */}
-            {Cards.filter((item) => item.status === "pro").map((item) => {
-              if (item.description)
-                return (
-                  <Box
-                    p={1}
-                    key={item.id}
-                    bgcolor={
-                      item.status === "pro"
-                        ? "success.main"
-                        : item.status === "new"
-                        ? "info.main"
-                        : "warning.main"
-                    }
-                  >
-                    <Card
-                      style={{
-                        backgroundColor:
-                          Date.now() > Date.parse(item.dueDate)
-                            ? "Coral"
-                            : "white",
-                      }}
+            {Cards.filter((item) => item.status === "inProgress").map(
+              (item) => {
+                if (item.description)
+                  return (
+                    <Box
+                      p={1}
+                      key={item.id}
+                      bgcolor={
+                        item.status === "inProgress"
+                          ? "success.main"
+                          : item.status === "todo"
+                          ? "info.main"
+                          : "warning.main"
+                      }
                     >
-                      <CardContent>
-                        <Typography variant="h6">{item.description}</Typography>
-                        <Typography color="textSecondary">
-                          {item.dueDate.slice(0, -6) +
-                            " " +
-                            item.dueDate.slice(11, 16)}
-                        </Typography>
-                      </CardContent>
-                      <CardActions>
-                        {/* //Buttons for Card---------------------- */}
-                        <div>
-                          <Grid container justify="center" spacing={2}>
-                            <Box p={1}>
-                              {/* //Modal Edit---------------------- */}
-                              <div>
+                      <Card
+                        style={{
+                          backgroundColor:
+                            Date.now() > Date.parse(item.dueDate)
+                              ? "Coral"
+                              : "white",
+                        }}
+                      >
+                        <CardContent>
+                          <Typography variant="h6">
+                            {item.description}
+                          </Typography>
+                          <Typography color="textSecondary">
+                            {item.dueDate.slice(0, 10)}
+                          </Typography>
+                        </CardContent>
+                        <CardActions>
+                          {/* //Buttons for Card---------------------- */}
+                          <div>
+                            <Grid container justify="center" spacing={2}>
+                              <Box p={1}>
+                                {/* //Modal Edit---------------------- */}
+                                <div>
+                                  <Fab
+                                    size="small"
+                                    color={"primary"}
+                                    aria-label="edit"
+                                    onClick={() => {
+                                      handleOpenEdit(item.id);
+                                    }}
+                                  >
+                                    <EditIcon />
+                                  </Fab>
+                                  <Modal
+                                    aria-labelledby="transition-modal-title"
+                                    aria-describedby="transition-modal-description"
+                                    className={classes.modal}
+                                    open={openEdit}
+                                    onClose={handleClose}
+                                    closeAfterTransition
+                                    BackdropComponent={Backdrop}
+                                    BackdropProps={{
+                                      timeout: 500,
+                                    }}
+                                  >
+                                    <Fade in={openEdit}>
+                                      {/* Card in Modal----------------------- */}
+                                      <Card>
+                                        <CardContent>
+                                          <form
+                                            className={classes.root}
+                                            noValidate
+                                            autoComplete="off"
+                                          >
+                                            <TextField
+                                              id="standard-basic"
+                                              label="Description"
+                                              multiline
+                                              value={text}
+                                              onChange={handleChangeText}
+                                              autoFocus
+                                            />
+                                          </form>
+                                          <form
+                                            className={classes.container}
+                                            noValidate
+                                          >
+                                            <TextField
+                                              onChange={handleChangeDate}
+                                              id="date"
+                                              label="Select Date and Time"
+                                              type="date"
+                                              defaultValue={date}
+                                              className={classes.textField}
+                                              InputLabelProps={{
+                                                shrink: true,
+                                              }}
+                                            />
+                                          </form>
+                                        </CardContent>
+                                        <CardActions>
+                                          <ButtonGroup
+                                            variant="text"
+                                            color="primary"
+                                            aria-label="text primary button group"
+                                          >
+                                            <Button onClick={handleCloseOkEdit}>
+                                              OK
+                                            </Button>
+                                            <Button onClick={handleCloseEdit}>
+                                              Cancel
+                                            </Button>
+                                          </ButtonGroup>
+                                        </CardActions>
+                                      </Card>
+                                      {/* Card in Modal----------------------- */}
+                                    </Fade>
+                                  </Modal>
+                                </div>
+                                {/* //Modal Edit---------------------- */}
+                              </Box>
+                              <Box p={1}>
                                 <Fab
+                                  color="secondary"
+                                  aria-label="delete"
                                   size="small"
-                                  color={"primary"}
-                                  aria-label="edit"
                                   onClick={() => {
-                                    handleOpenEdit(item.id);
+                                    setCards(
+                                      Cards.filter(
+                                        (myitem) => myitem.id !== item.id
+                                      )
+                                    );
+                                    removeTodo(item.id);
                                   }}
                                 >
-                                  <EditIcon />
+                                  <DeleteIcon />
                                 </Fab>
-                                <Modal
-                                  aria-labelledby="transition-modal-title"
-                                  aria-describedby="transition-modal-description"
-                                  className={classes.modal}
-                                  open={openEdit}
-                                  onClose={handleClose}
-                                  closeAfterTransition
-                                  BackdropComponent={Backdrop}
-                                  BackdropProps={{
-                                    timeout: 500,
-                                  }}
+                              </Box>
+                              <Box p={1}>
+                                <Fab
+                                  aria-label="input"
+                                  size="small"
+                                  onClick={() => updateStatusPro(item.id)}
                                 >
-                                  <Fade in={openEdit}>
-                                    {/* Card in Modal----------------------- */}
-                                    <Card>
-                                      <CardContent>
-                                        <form
-                                          className={classes.root}
-                                          noValidate
-                                          autoComplete="off"
-                                        >
-                                          <TextField
-                                            id="standard-basic"
-                                            label="Description"
-                                            multiline
-                                            value={text}
-                                            onChange={handleChangeText}
-                                            autoFocus
-                                          />
-                                        </form>
-                                        <form
-                                          className={classes.container}
-                                          noValidate
-                                        >
-                                          <TextField
-                                            onChange={handleChangeDate}
-                                            id="datetime-local"
-                                            label="Select Date and Time"
-                                            type="datetime-local"
-                                            defaultValue={date}
-                                            className={classes.textField}
-                                            InputLabelProps={{
-                                              shrink: true,
-                                            }}
-                                          />
-                                        </form>
-                                      </CardContent>
-                                      <CardActions>
-                                        <ButtonGroup
-                                          variant="text"
-                                          color="primary"
-                                          aria-label="text primary button group"
-                                        >
-                                          <Button onClick={handleCloseOkEdit}>
-                                            OK
-                                          </Button>
-                                          <Button onClick={handleCloseEdit}>
-                                            Cancel
-                                          </Button>
-                                        </ButtonGroup>
-                                      </CardActions>
-                                    </Card>
-                                    {/* Card in Modal----------------------- */}
-                                  </Fade>
-                                </Modal>
-                              </div>
-                              {/* //Modal Edit---------------------- */}
-                            </Box>
-                            <Box p={1}>
-                              <Fab
-                                color="secondary"
-                                aria-label="delete"
-                                size="small"
-                                onClick={() =>
-                                  setCards(
-                                    Cards.filter(
-                                      (myitem) => myitem.id !== item.id
-                                    )
-                                  )
-                                }
-                              >
-                                <DeleteIcon />
-                              </Fab>
-                            </Box>
-                            <Box p={1}>
-                              <Fab
-                                aria-label="input"
-                                size="small"
-                                onClick={() => updateStatusPro(item.id)}
-                              >
-                                <InputIcon />
-                              </Fab>
-                            </Box>
-                          </Grid>
-                        </div>
-                        {/* //Buttons for Card---------------------- */}
-                      </CardActions>
-                    </Card>
-                  </Box>
-                );
-            })}
+                                  <InputIcon />
+                                </Fab>
+                              </Box>
+                            </Grid>
+                          </div>
+                          {/* //Buttons for Card---------------------- */}
+                        </CardActions>
+                      </Card>
+                    </Box>
+                  );
+              }
+            )}
             {/* //Card------------------------ */}
           </Paper>
         </Grid>
 
+        {/* Finished column */}
         <Grid item xs={4}>
           <Paper elevation={2}>
             <Box p={1}>
               <Typography variant="h5">Finished</Typography>
             </Box>
             {/* //Card------------------------ */}
-            {Cards.filter((item) => item.status === "fin").map((item) => {
+            {Cards.filter((item) => item.status === "completed").map((item) => {
               if (item.description)
                 return (
                   <Box
                     p={1}
                     key={item.id}
                     bgcolor={
-                      item.status === "pro"
+                      item.status === "inProgress"
                         ? "success.main"
-                        : item.status === "new"
+                        : item.status === "todo"
                         ? "info.main"
                         : "warning.main"
                     }
@@ -581,9 +654,7 @@ export const AllInOneContainer = () => {
                       <CardContent>
                         <Typography variant="h6">{item.description}</Typography>
                         <Typography color="textSecondary">
-                          {item.dueDate.slice(0, -6) +
-                            " " +
-                            item.dueDate.slice(11, 16)}
+                          {item.dueDate.slice(0, 10)}
                         </Typography>
                       </CardContent>
                       <CardActions>
@@ -640,9 +711,9 @@ export const AllInOneContainer = () => {
                                         >
                                           <TextField
                                             onChange={handleChangeDate}
-                                            id="datetime-local"
+                                            id="date"
                                             label="Select Date and Time"
-                                            type="datetime-local"
+                                            type="date"
                                             defaultValue={date}
                                             className={classes.textField}
                                             InputLabelProps={{
@@ -677,13 +748,14 @@ export const AllInOneContainer = () => {
                                 color="secondary"
                                 aria-label="delete"
                                 size="small"
-                                onClick={() =>
+                                onClick={() => {
                                   setCards(
                                     Cards.filter(
                                       (myitem) => myitem.id !== item.id
                                     )
-                                  )
-                                }
+                                  );
+                                  removeTodo(item.id);
+                                }}
                               >
                                 <DeleteIcon />
                               </Fab>
