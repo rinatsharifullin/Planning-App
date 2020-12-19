@@ -50,6 +50,7 @@ export const AllInOneContainer = () => {
     setOpen(true);
   };
   const handleClose = () => {
+    setText("");
     setOpen(false);
   };
   const handleCloseOk = () => {
@@ -63,9 +64,6 @@ export const AllInOneContainer = () => {
     if (text) setCards([...Cards, SingleCard]);
     setText("");
     setOpen(false);
-  };
-  const DeleteCard = (id) => {
-    console.log(id);
   };
 
   //Style----------------------
@@ -241,7 +239,13 @@ export const AllInOneContainer = () => {
                                 color="secondary"
                                 aria-label="edit"
                                 size="small"
-                                onClick={DeleteCard}
+                                onClick={() =>
+                                  setCards(
+                                    Cards.filter(
+                                      (myitem) => myitem.id !== item.id
+                                    )
+                                  )
+                                }
                               >
                                 <DeleteIcon />
                               </Fab>
