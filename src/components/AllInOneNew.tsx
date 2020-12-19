@@ -10,12 +10,10 @@ import {
   createStyles,
   Fab,
   Fade,
-  FormLabel,
   Grid,
   makeStyles,
   Modal,
   Paper,
-  RadioGroup,
   TextField,
   Theme,
   Typography,
@@ -25,17 +23,15 @@ import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@material-ui/icons/Add";
 import InputIcon from "@material-ui/icons/Input";
 import DeleteIcon from "@material-ui/icons/Delete";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
+
 export const AllInOneContainer = () => {
   var nowDate = new Date().toISOString().slice(0, -8);
   const [text, setText] = useState("");
   const [date, setDate] = useState(nowDate);
   const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [idEdit, setIdEdit] = useState(0);
+  const [statusEdit, setStatusEdit] = useState("");
   type singleCard = {
     id: number;
     description: string;
@@ -49,21 +45,53 @@ export const AllInOneContainer = () => {
   const handleOpen = () => {
     setOpen(true);
   };
+  const handleOpenEdit = (id) => {
+    for (const x of Cards) {
+      if (x.id === id) {
+        setText(x.description);
+        setDate(x.dueDate);
+        setIdEdit(x.id);
+        setStatusEdit(x.status);
+        break;
+      }
+    }
+    console.log(date);
+    setOpenEdit(true);
+  };
   const handleClose = () => {
     setText("");
     setOpen(false);
   };
+  const handleCloseEdit = () => {
+    setText("");
+    setOpenEdit(false);
+  };
+
   const handleCloseOk = () => {
     SingleCard = {
       id: Date.now(),
       description: text,
       status: "new",
-      dueDate: date.slice(0, -6) + " " + date.slice(11, 16),
+      dueDate: date,
     };
     console.log(Cards);
     if (text) setCards([...Cards, SingleCard]);
     setText("");
     setOpen(false);
+  };
+  const handleCloseOkEdit = () => {
+    for (const x in Cards) {
+      if (Cards[x].id === idEdit) {
+        console.log(idEdit);
+        Cards[x].description = text;
+        Cards[x].dueDate = date;
+        break;
+      }
+    }
+
+    if (text) setCards(Cards);
+    setText("");
+    setOpenEdit(false);
   };
 
   //Style----------------------
@@ -200,9 +228,9 @@ export const AllInOneContainer = () => {
                     p={1}
                     key={item.id}
                     bgcolor={
-                      item.status == "inProgress"
+                      item.status === "inProgress"
                         ? "success.main"
-                        : item.status == "new"
+                        : item.status === "new"
                         ? "info.main"
                         : "warning.main"
                     }
@@ -218,7 +246,9 @@ export const AllInOneContainer = () => {
                       <CardContent>
                         <Typography variant="h6">{item.description}</Typography>
                         <Typography color="textSecondary">
-                          {item.dueDate}
+                          {item.dueDate.slice(0, -6) +
+                            " " +
+                            item.dueDate.slice(11, 16)}
                         </Typography>
                       </CardContent>
                       <CardActions>
@@ -226,13 +256,85 @@ export const AllInOneContainer = () => {
                         <div>
                           <Grid container justify="center" spacing={2}>
                             <Box p={1}>
-                              <Fab
-                                color="primary"
-                                aria-label="add"
-                                size="small"
-                              >
-                                <EditIcon />
-                              </Fab>
+                              {/* //Modal Edit---------------------- */}
+                              <div>
+                                <Fab
+                                  size="small"
+                                  color={"primary"}
+                                  aria-label="edit"
+                                  onClick={() => {
+                                    handleOpenEdit(item.id);
+                                  }}
+                                >
+                                  <EditIcon />
+                                </Fab>
+                                <Modal
+                                  aria-labelledby="transition-modal-title"
+                                  aria-describedby="transition-modal-description"
+                                  className={classes.modal}
+                                  open={openEdit}
+                                  onClose={handleClose}
+                                  closeAfterTransition
+                                  BackdropComponent={Backdrop}
+                                  BackdropProps={{
+                                    timeout: 500,
+                                  }}
+                                >
+                                  <Fade in={openEdit}>
+                                    {/* Card in Modal----------------------- */}
+                                    <Card>
+                                      <CardContent>
+                                        <form
+                                          className={classes.root}
+                                          noValidate
+                                          autoComplete="off"
+                                        >
+                                          <TextField
+                                            id="standard-basic"
+                                            label="Description"
+                                            multiline
+                                            value={text}
+                                            onChange={handleChangeText}
+                                            autoFocus
+                                          />
+                                        </form>
+                                        <form
+                                          className={classes.container}
+                                          noValidate
+                                        >
+                                          <TextField
+                                            onChange={handleChangeDate}
+                                            id="datetime-local"
+                                            label="Select Date and Time"
+                                            type="datetime-local"
+                                            defaultValue={date}
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        </form>
+                                      </CardContent>
+                                      <CardActions>
+                                        <ButtonGroup
+                                          variant="text"
+                                          color="primary"
+                                          aria-label="text primary button group"
+                                        >
+                                          <Button onClick={handleCloseOkEdit}>
+                                            OK
+                                          </Button>
+                                          <Button onClick={handleCloseEdit}>
+                                            Cancel
+                                          </Button>
+                                        </ButtonGroup>
+                                      </CardActions>
+                                    </Card>
+                                    {/* Card in Modal----------------------- */}
+                                  </Fade>
+                                </Modal>
+                              </div>
+                              {/* //Modal Edit---------------------- */}
                             </Box>
                             <Box p={1}>
                               <Fab
