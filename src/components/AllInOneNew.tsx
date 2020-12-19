@@ -32,14 +32,40 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 export const AllInOneContainer = () => {
-  const [text, setText] = useState("qwe");
-  //Card---------------------
+  var nowDate = new Date().toISOString().slice(0, -8);
+  const [text, setText] = useState("");
+  const [date, setDate] = useState(nowDate);
+  const [open, setOpen] = React.useState(false);
+  type singleCard = {
+    id: number;
+    description: string;
+    status: string;
+    dueDate: string;
+  };
+  var SingleCard = { id: 123, description: "", status: "", dueDate: "" };
+  const [Cards, setCards] = useState([
+    { id: 0, description: "", status: "", dueDate: "" },
+  ]);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleCloseOk = () => {
+    SingleCard = {
+      id: Date.now(),
+      description: text,
+      status: "new",
+      dueDate: date,
+    };
+    console.log(Cards);
+    if (text) setCards([...Cards, SingleCard]);
+    setText("");
+    setOpen(false);
+  };
 
-  //Card---------------------
-  //Buttons------------------
-
-  //Buttons------------------
-  //Modal----------------------
+  //Style----------------------
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       modal: {
@@ -72,35 +98,19 @@ export const AllInOneContainer = () => {
   );
 
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleCloseOk = () => {
-    // setText();
-    setOpen(false);
-  };
-
-  //Modal----------------------
+  //Style----------------------
 
   //Text----------------------
-  const [value, setValue] = React.useState("");
   const handleChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
     setText(event.target.value);
   };
   const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setText(event.target.value);
+    setDate(event.target.value);
   };
 
   //Text----------------------
-  //Date----------------------
 
-  var nowDate = new Date().toISOString().slice(0, -8);
+  //Date----------------------
 
   //Date----------------------
 
@@ -109,6 +119,7 @@ export const AllInOneContainer = () => {
       <Typography variant="h3" align="center" color="textPrimary" gutterBottom>
         Planning App
       </Typography>
+      {/* //Modal---------------------- */}
       <div>
         <Fab
           size="small"
@@ -131,6 +142,7 @@ export const AllInOneContainer = () => {
           }}
         >
           <Fade in={open}>
+            {/* Card in Modal----------------------- */}
             <Card>
               <CardContent>
                 <form className={classes.root} noValidate autoComplete="off">
@@ -168,44 +180,72 @@ export const AllInOneContainer = () => {
                 </ButtonGroup>
               </CardActions>
             </Card>
+            {/* Card in Modal----------------------- */}
           </Fade>
         </Modal>
       </div>
+      {/* //Modal---------------------- */}
       <Grid container justify="center" spacing={2}>
         <Grid item xs={4}>
           <Paper elevation={2}>
             <Box p={1}>
               <Typography variant="h5">New</Typography>
             </Box>
-            <Box p={1}>
-              <Card>
-                <CardContent>
-                  <Typography variant="h6">{text}</Typography>
-                  <Typography color="textSecondary">12/12/12</Typography>
-                </CardContent>
-                <CardActions>
-                  <div>
-                    <Grid container justify="center" spacing={2}>
-                      <Box p={1}>
-                        <Fab color="primary" aria-label="add" size="small">
-                          <EditIcon />
-                        </Fab>
-                      </Box>
-                      <Box p={1}>
-                        <Fab color="secondary" aria-label="edit" size="small">
-                          <DeleteIcon />
-                        </Fab>
-                      </Box>
-                      <Box p={1}>
-                        <Fab aria-label="input" size="small">
-                          <InputIcon />
-                        </Fab>
-                      </Box>
-                    </Grid>
-                  </div>
-                </CardActions>
-              </Card>
-            </Box>
+            {/* //Card------------------------ */}
+            {Cards.map((item) => {
+              if (item.description)
+                return (
+                  <Box p={1} key={item.id} bgcolor="primary.main">
+                    <Card
+                      style={{
+                        backgroundColor:
+                          Date.now() > Date.parse(item.dueDate)
+                            ? "Coral"
+                            : "white",
+                      }}
+                    >
+                      <CardContent>
+                        <Typography variant="h6">{item.description}</Typography>
+                        <Typography color="textSecondary">
+                          {item.dueDate}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        {/* //Buttons for Card---------------------- */}
+                        <div>
+                          <Grid container justify="center" spacing={2}>
+                            <Box p={1}>
+                              <Fab
+                                color="primary"
+                                aria-label="add"
+                                size="small"
+                              >
+                                <EditIcon />
+                              </Fab>
+                            </Box>
+                            <Box p={1}>
+                              <Fab
+                                color="secondary"
+                                aria-label="edit"
+                                size="small"
+                              >
+                                <DeleteIcon />
+                              </Fab>
+                            </Box>
+                            <Box p={1}>
+                              <Fab aria-label="input" size="small">
+                                <InputIcon />
+                              </Fab>
+                            </Box>
+                          </Grid>
+                        </div>
+                        {/* //Buttons for Card---------------------- */}
+                      </CardActions>
+                    </Card>
+                  </Box>
+                );
+            })}
+            {/* //Card------------------------ */}
           </Paper>
         </Grid>
       </Grid>
