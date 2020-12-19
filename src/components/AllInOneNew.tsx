@@ -32,41 +32,43 @@ export const AllInOneContainer = () => {
   const [openEdit, setOpenEdit] = React.useState(false);
   const [idEdit, setIdEdit] = useState(0);
   const [statusEdit, setStatusEdit] = useState("");
-  type singleCard = {
-    id: number;
-    description: string;
-    status: string;
-    dueDate: string;
-  };
-  var SingleCard = { id: 123, description: "", status: "", dueDate: "" };
   const [Cards, setCards] = useState([
     { id: 0, description: "", status: "", dueDate: "" },
   ]);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleOpenEdit = (id) => {
-    for (const x of Cards) {
-      if (x.id === id) {
-        setText(x.description);
-        setDate(x.dueDate);
-        setIdEdit(x.id);
-        setStatusEdit(x.status);
+
+  var SingleCard = { id: 123, description: "", status: "", dueDate: "" };
+
+  const updateStatusNew = (id) => {
+    for (const x in Cards) {
+      if (Cards[x].id === id) {
+        console.log(Cards[x].status);
+        if (Cards[x].status === "new") Cards[x].status = "pro";
+
         break;
       }
     }
-    console.log(date);
-    setOpenEdit(true);
+    setCards([...Cards]);
+  };
+  const updateStatusPro = (id) => {
+    for (const x in Cards) {
+      if (Cards[x].id === id) {
+        console.log(Cards[x].status);
+
+        if (Cards[x].status === "pro") Cards[x].status = "fin";
+        break;
+      }
+    }
+    setCards([...Cards]);
+  };
+
+  // ---------------------
+  const handleOpen = () => {
+    setOpen(true);
   };
   const handleClose = () => {
     setText("");
     setOpen(false);
   };
-  const handleCloseEdit = () => {
-    setText("");
-    setOpenEdit(false);
-  };
-
   const handleCloseOk = () => {
     SingleCard = {
       id: Date.now(),
@@ -77,8 +79,29 @@ export const AllInOneContainer = () => {
     console.log(Cards);
     if (text) setCards([...Cards, SingleCard]);
     setText("");
+    setDate(nowDate);
     setOpen(false);
   };
+
+  // ---------------------
+  const handleOpenEdit = (id) => {
+    for (const x of Cards) {
+      if (x.id === id) {
+        setText(x.description);
+        setDate(x.dueDate);
+        setIdEdit(x.id);
+        setStatusEdit(x.status);
+        break;
+      }
+    }
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setText("");
+    setOpenEdit(false);
+  };
+
   const handleCloseOkEdit = () => {
     for (const x in Cards) {
       if (Cards[x].id === idEdit) {
@@ -88,12 +111,11 @@ export const AllInOneContainer = () => {
         break;
       }
     }
-
     if (text) setCards(Cards);
     setText("");
     setOpenEdit(false);
   };
-
+  // ---------------------
   //Style----------------------
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -136,12 +158,9 @@ export const AllInOneContainer = () => {
   const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDate(event.target.value);
   };
-
   //Text----------------------
 
-  //Date----------------------
-
-  //Date----------------------
+  //DOM----------------------
 
   return (
     <Container maxWidth="md" component="main">
@@ -221,14 +240,14 @@ export const AllInOneContainer = () => {
               <Typography variant="h5">New</Typography>
             </Box>
             {/* //Card------------------------ */}
-            {Cards.map((item) => {
+            {Cards.filter((item) => item.status === "new").map((item) => {
               if (item.description)
                 return (
                   <Box
                     p={1}
                     key={item.id}
                     bgcolor={
-                      item.status === "inProgress"
+                      item.status === "pro"
                         ? "success.main"
                         : item.status === "new"
                         ? "info.main"
@@ -339,7 +358,7 @@ export const AllInOneContainer = () => {
                             <Box p={1}>
                               <Fab
                                 color="secondary"
-                                aria-label="edit"
+                                aria-label="delete"
                                 size="small"
                                 onClick={() =>
                                   setCards(
@@ -353,7 +372,324 @@ export const AllInOneContainer = () => {
                               </Fab>
                             </Box>
                             <Box p={1}>
-                              <Fab aria-label="input" size="small">
+                              <Fab
+                                aria-label="input"
+                                size="small"
+                                onClick={() => updateStatusNew(item.id)}
+                              >
+                                <InputIcon />
+                              </Fab>
+                            </Box>
+                          </Grid>
+                        </div>
+                        {/* //Buttons for Card---------------------- */}
+                      </CardActions>
+                    </Card>
+                  </Box>
+                );
+            })}
+            {/* //Card------------------------ */}
+          </Paper>
+        </Grid>
+
+        <Grid item xs={4}>
+          <Paper elevation={2}>
+            <Box p={1}>
+              <Typography variant="h5">In Progress</Typography>
+            </Box>
+            {/* //Card------------------------ */}
+            {Cards.filter((item) => item.status === "pro").map((item) => {
+              if (item.description)
+                return (
+                  <Box
+                    p={1}
+                    key={item.id}
+                    bgcolor={
+                      item.status === "pro"
+                        ? "success.main"
+                        : item.status === "new"
+                        ? "info.main"
+                        : "warning.main"
+                    }
+                  >
+                    <Card
+                      style={{
+                        backgroundColor:
+                          Date.now() > Date.parse(item.dueDate)
+                            ? "Coral"
+                            : "white",
+                      }}
+                    >
+                      <CardContent>
+                        <Typography variant="h6">{item.description}</Typography>
+                        <Typography color="textSecondary">
+                          {item.dueDate.slice(0, -6) +
+                            " " +
+                            item.dueDate.slice(11, 16)}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        {/* //Buttons for Card---------------------- */}
+                        <div>
+                          <Grid container justify="center" spacing={2}>
+                            <Box p={1}>
+                              {/* //Modal Edit---------------------- */}
+                              <div>
+                                <Fab
+                                  size="small"
+                                  color={"primary"}
+                                  aria-label="edit"
+                                  onClick={() => {
+                                    handleOpenEdit(item.id);
+                                  }}
+                                >
+                                  <EditIcon />
+                                </Fab>
+                                <Modal
+                                  aria-labelledby="transition-modal-title"
+                                  aria-describedby="transition-modal-description"
+                                  className={classes.modal}
+                                  open={openEdit}
+                                  onClose={handleClose}
+                                  closeAfterTransition
+                                  BackdropComponent={Backdrop}
+                                  BackdropProps={{
+                                    timeout: 500,
+                                  }}
+                                >
+                                  <Fade in={openEdit}>
+                                    {/* Card in Modal----------------------- */}
+                                    <Card>
+                                      <CardContent>
+                                        <form
+                                          className={classes.root}
+                                          noValidate
+                                          autoComplete="off"
+                                        >
+                                          <TextField
+                                            id="standard-basic"
+                                            label="Description"
+                                            multiline
+                                            value={text}
+                                            onChange={handleChangeText}
+                                            autoFocus
+                                          />
+                                        </form>
+                                        <form
+                                          className={classes.container}
+                                          noValidate
+                                        >
+                                          <TextField
+                                            onChange={handleChangeDate}
+                                            id="datetime-local"
+                                            label="Select Date and Time"
+                                            type="datetime-local"
+                                            defaultValue={date}
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        </form>
+                                      </CardContent>
+                                      <CardActions>
+                                        <ButtonGroup
+                                          variant="text"
+                                          color="primary"
+                                          aria-label="text primary button group"
+                                        >
+                                          <Button onClick={handleCloseOkEdit}>
+                                            OK
+                                          </Button>
+                                          <Button onClick={handleCloseEdit}>
+                                            Cancel
+                                          </Button>
+                                        </ButtonGroup>
+                                      </CardActions>
+                                    </Card>
+                                    {/* Card in Modal----------------------- */}
+                                  </Fade>
+                                </Modal>
+                              </div>
+                              {/* //Modal Edit---------------------- */}
+                            </Box>
+                            <Box p={1}>
+                              <Fab
+                                color="secondary"
+                                aria-label="delete"
+                                size="small"
+                                onClick={() =>
+                                  setCards(
+                                    Cards.filter(
+                                      (myitem) => myitem.id !== item.id
+                                    )
+                                  )
+                                }
+                              >
+                                <DeleteIcon />
+                              </Fab>
+                            </Box>
+                            <Box p={1}>
+                              <Fab
+                                aria-label="input"
+                                size="small"
+                                onClick={() => updateStatusPro(item.id)}
+                              >
+                                <InputIcon />
+                              </Fab>
+                            </Box>
+                          </Grid>
+                        </div>
+                        {/* //Buttons for Card---------------------- */}
+                      </CardActions>
+                    </Card>
+                  </Box>
+                );
+            })}
+            {/* //Card------------------------ */}
+          </Paper>
+        </Grid>
+
+        <Grid item xs={4}>
+          <Paper elevation={2}>
+            <Box p={1}>
+              <Typography variant="h5">Finished</Typography>
+            </Box>
+            {/* //Card------------------------ */}
+            {Cards.filter((item) => item.status === "fin").map((item) => {
+              if (item.description)
+                return (
+                  <Box
+                    p={1}
+                    key={item.id}
+                    bgcolor={
+                      item.status === "pro"
+                        ? "success.main"
+                        : item.status === "new"
+                        ? "info.main"
+                        : "warning.main"
+                    }
+                  >
+                    <Card
+                      style={{
+                        backgroundColor:
+                          Date.now() > Date.parse(item.dueDate)
+                            ? "Coral"
+                            : "white",
+                      }}
+                    >
+                      <CardContent>
+                        <Typography variant="h6">{item.description}</Typography>
+                        <Typography color="textSecondary">
+                          {item.dueDate.slice(0, -6) +
+                            " " +
+                            item.dueDate.slice(11, 16)}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        {/* //Buttons for Card---------------------- */}
+                        <div>
+                          <Grid container justify="center" spacing={2}>
+                            <Box p={1}>
+                              {/* //Modal Edit---------------------- */}
+                              <div>
+                                <Fab
+                                  disabled
+                                  size="small"
+                                  color={"primary"}
+                                  aria-label="edit"
+                                  onClick={() => {
+                                    handleOpenEdit(item.id);
+                                  }}
+                                >
+                                  <EditIcon />
+                                </Fab>
+                                <Modal
+                                  aria-labelledby="transition-modal-title"
+                                  aria-describedby="transition-modal-description"
+                                  className={classes.modal}
+                                  open={openEdit}
+                                  onClose={handleClose}
+                                  closeAfterTransition
+                                  BackdropComponent={Backdrop}
+                                  BackdropProps={{
+                                    timeout: 500,
+                                  }}
+                                >
+                                  <Fade in={openEdit}>
+                                    {/* Card in Modal----------------------- */}
+                                    <Card>
+                                      <CardContent>
+                                        <form
+                                          className={classes.root}
+                                          noValidate
+                                          autoComplete="off"
+                                        >
+                                          <TextField
+                                            id="standard-basic"
+                                            label="Description"
+                                            multiline
+                                            value={text}
+                                            onChange={handleChangeText}
+                                            autoFocus
+                                          />
+                                        </form>
+                                        <form
+                                          className={classes.container}
+                                          noValidate
+                                        >
+                                          <TextField
+                                            onChange={handleChangeDate}
+                                            id="datetime-local"
+                                            label="Select Date and Time"
+                                            type="datetime-local"
+                                            defaultValue={date}
+                                            className={classes.textField}
+                                            InputLabelProps={{
+                                              shrink: true,
+                                            }}
+                                          />
+                                        </form>
+                                      </CardContent>
+                                      <CardActions>
+                                        <ButtonGroup
+                                          variant="text"
+                                          color="primary"
+                                          aria-label="text primary button group"
+                                        >
+                                          <Button onClick={handleCloseOkEdit}>
+                                            OK
+                                          </Button>
+                                          <Button onClick={handleCloseEdit}>
+                                            Cancel
+                                          </Button>
+                                        </ButtonGroup>
+                                      </CardActions>
+                                    </Card>
+                                    {/* Card in Modal----------------------- */}
+                                  </Fade>
+                                </Modal>
+                              </div>
+                              {/* //Modal Edit---------------------- */}
+                            </Box>
+                            <Box p={1}>
+                              <Fab
+                                color="secondary"
+                                aria-label="delete"
+                                size="small"
+                                onClick={() =>
+                                  setCards(
+                                    Cards.filter(
+                                      (myitem) => myitem.id !== item.id
+                                    )
+                                  )
+                                }
+                              >
+                                <DeleteIcon />
+                              </Fab>
+                            </Box>
+                            <Box p={1}>
+                              <Fab aria-label="input" size="small" disabled>
                                 <InputIcon />
                               </Fab>
                             </Box>
