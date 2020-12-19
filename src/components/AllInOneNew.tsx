@@ -57,12 +57,15 @@ export const AllInOneContainer = () => {
       id: Date.now(),
       description: text,
       status: "new",
-      dueDate: date,
+      dueDate: date.slice(0, -6) + " " + date.slice(11, 16),
     };
     console.log(Cards);
     if (text) setCards([...Cards, SingleCard]);
     setText("");
     setOpen(false);
+  };
+  const DeleteCard = (id) => {
+    console.log(id);
   };
 
   //Style----------------------
@@ -195,7 +198,17 @@ export const AllInOneContainer = () => {
             {Cards.map((item) => {
               if (item.description)
                 return (
-                  <Box p={1} key={item.id} bgcolor="primary.main">
+                  <Box
+                    p={1}
+                    key={item.id}
+                    bgcolor={
+                      item.status == "inProgress"
+                        ? "success.main"
+                        : item.status == "new"
+                        ? "info.main"
+                        : "warning.main"
+                    }
+                  >
                     <Card
                       style={{
                         backgroundColor:
@@ -228,6 +241,7 @@ export const AllInOneContainer = () => {
                                 color="secondary"
                                 aria-label="edit"
                                 size="small"
+                                onClick={DeleteCard}
                               >
                                 <DeleteIcon />
                               </Fab>
