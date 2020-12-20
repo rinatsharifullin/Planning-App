@@ -24,6 +24,8 @@ import AddIcon from "@material-ui/icons/Add";
 import InputIcon from "@material-ui/icons/Input";
 import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 
 export const AllInOneContainer = () => {
   var nowDate = new Date().toISOString().slice(0, 10);
@@ -56,11 +58,36 @@ export const AllInOneContainer = () => {
     }
     setCards([...Cards]);
   };
+
   const updateStatusPro = (id) => {
     for (const x in Cards) {
       if (Cards[x].id === id) {
         if (Cards[x].status === "inProgress") {
           Cards[x].status = "completed";
+          updateTodo(Cards[x]);
+          break;
+        }
+      }
+    }
+    setCards([...Cards]);
+  };
+  const reverseStatusPro = (id) => {
+    for (const x in Cards) {
+      if (Cards[x].id === id) {
+        if (Cards[x].status === "inProgress") {
+          Cards[x].status = "todo";
+          updateTodo(Cards[x]);
+          break;
+        }
+      }
+    }
+    setCards([...Cards]);
+  };
+  const reverseStatusFin = (id) => {
+    for (const x in Cards) {
+      if (Cards[x].id === id) {
+        if (Cards[x].status === "completed") {
+          Cards[x].status = "inProgress";
           updateTodo(Cards[x]);
           break;
         }
@@ -173,7 +200,6 @@ export const AllInOneContainer = () => {
   async function removeTodo(id) {
     try {
       const response = await todosApi.post("/removeTodo", { id });
-      console.log(response);
     } catch (e) {
       console.log(e);
     }
@@ -232,7 +258,7 @@ export const AllInOneContainer = () => {
 
   return (
     <Container maxWidth="md" component="main">
-      <Typography variant="h3" align="center" color="textPrimary" gutterBottom>
+      <Typography variant="h4" align="center" color="textPrimary" gutterBottom>
         Planning App
       </Typography>
       {/* //Modal---------------------- */}
@@ -305,7 +331,7 @@ export const AllInOneContainer = () => {
         {/* New status Column */}
         <Grid item xs={4}>
           <Paper elevation={2}>
-            <Box p={1}>
+            <Box p={1} bgcolor={"warning.main"}>
               <Typography variant="h5">New</Typography>
             </Box>
             {/* //Card------------------------ */}
@@ -318,7 +344,7 @@ export const AllInOneContainer = () => {
                     bgcolor={
                       item.status === "inProgress"
                         ? "success.main"
-                        : item.status === "todo"
+                        : item.status === "completed"
                         ? "info.main"
                         : "warning.main"
                     }
@@ -327,7 +353,7 @@ export const AllInOneContainer = () => {
                       style={{
                         backgroundColor:
                           Date.now() > Date.parse(item.dueDate)
-                            ? "Coral"
+                            ? "PapayaWhip"
                             : "white",
                       }}
                     >
@@ -445,7 +471,7 @@ export const AllInOneContainer = () => {
                                 size="small"
                                 onClick={() => updateStatusNew(item.id)}
                               >
-                                <InputIcon />
+                                <ArrowForwardIcon />
                               </Fab>
                             </Box>
                           </Grid>
@@ -463,7 +489,7 @@ export const AllInOneContainer = () => {
         {/* In Progress Column */}
         <Grid item xs={4}>
           <Paper elevation={2}>
-            <Box p={1}>
+            <Box p={1} bgcolor={"success.main"}>
               <Typography variant="h5">In Progress</Typography>
             </Box>
             {/* //Card------------------------ */}
@@ -477,7 +503,7 @@ export const AllInOneContainer = () => {
                       bgcolor={
                         item.status === "inProgress"
                           ? "success.main"
-                          : item.status === "todo"
+                          : item.status === "completed"
                           ? "info.main"
                           : "warning.main"
                       }
@@ -486,7 +512,7 @@ export const AllInOneContainer = () => {
                         style={{
                           backgroundColor:
                             Date.now() > Date.parse(item.dueDate)
-                              ? "Coral"
+                              ? "PapayaWhip"
                               : "white",
                         }}
                       >
@@ -502,6 +528,16 @@ export const AllInOneContainer = () => {
                           {/* //Buttons for Card---------------------- */}
                           <div>
                             <Grid container justify="center" spacing={2}>
+                              <Box p={1}>
+                                <Fab
+                                  aria-label="input"
+                                  size="small"
+                                  onClick={() => reverseStatusPro(item.id)}
+                                >
+                                  <ArrowBackIcon />
+                                </Fab>
+                              </Box>
+
                               <Box p={1}>
                                 {/* //Modal Edit---------------------- */}
                                 <div>
@@ -606,7 +642,7 @@ export const AllInOneContainer = () => {
                                   size="small"
                                   onClick={() => updateStatusPro(item.id)}
                                 >
-                                  <InputIcon />
+                                  <ArrowForwardIcon />
                                 </Fab>
                               </Box>
                             </Grid>
@@ -625,7 +661,7 @@ export const AllInOneContainer = () => {
         {/* Finished column */}
         <Grid item xs={4}>
           <Paper elevation={2}>
-            <Box p={1}>
+            <Box p={1} bgcolor={"info.main"}>
               <Typography variant="h5">Finished</Typography>
             </Box>
             {/* //Card------------------------ */}
@@ -638,7 +674,7 @@ export const AllInOneContainer = () => {
                     bgcolor={
                       item.status === "inProgress"
                         ? "success.main"
-                        : item.status === "todo"
+                        : item.status === "completed"
                         ? "info.main"
                         : "warning.main"
                     }
@@ -647,7 +683,7 @@ export const AllInOneContainer = () => {
                       style={{
                         backgroundColor:
                           Date.now() > Date.parse(item.dueDate)
-                            ? "Coral"
+                            ? "PapayaWhip"
                             : "white",
                       }}
                     >
@@ -661,6 +697,15 @@ export const AllInOneContainer = () => {
                         {/* //Buttons for Card---------------------- */}
                         <div>
                           <Grid container justify="center" spacing={2}>
+                            <Box p={1}>
+                              <Fab
+                                aria-label="input"
+                                size="small"
+                                onClick={() => reverseStatusFin(item.id)}
+                              >
+                                <ArrowBackIcon />
+                              </Fab>
+                            </Box>
                             <Box p={1}>
                               {/* //Modal Edit---------------------- */}
                               <div>
@@ -758,11 +803,6 @@ export const AllInOneContainer = () => {
                                 }}
                               >
                                 <DeleteIcon />
-                              </Fab>
-                            </Box>
-                            <Box p={1}>
-                              <Fab aria-label="input" size="small" disabled>
-                                <InputIcon />
                               </Fab>
                             </Box>
                           </Grid>
