@@ -24,10 +24,10 @@ import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import axios from "axios";
 
-export const ColumnOfCards = ({ ChildCards, cardsStatus }) => {
+export const ColumnOfCards = ({ CardsToChild, cardsStatus, CardsToParent }) => {
   var nowDate = new Date().toISOString().slice(0, 10);
   const [text, setText] = useState("");
-  const [Cards, setCards] = useState([...ChildCards]);
+  const [Cards, setCards] = useState([...CardsToChild]);
   const [date, setDate] = useState(nowDate);
   const [idEdit, setIdEdit] = useState(0);
   const [statusEdit, setStatusEdit] = useState("");
@@ -77,6 +77,7 @@ export const ColumnOfCards = ({ ChildCards, cardsStatus }) => {
 
     if (text) {
       setCards([...Cards]);
+      CardsToParent([...Cards]);
       updateTodo(SingleCard);
     }
     setText("");
@@ -100,6 +101,7 @@ export const ColumnOfCards = ({ ChildCards, cardsStatus }) => {
       }
     }
     setCards([...Cards]);
+    CardsToParent([...Cards]);
   };
   const updateStatusPro = (id) => {
     for (const x in Cards) {
@@ -112,6 +114,7 @@ export const ColumnOfCards = ({ ChildCards, cardsStatus }) => {
       }
     }
     setCards([...Cards]);
+    CardsToParent([...Cards]);
   };
   const reverseStatusPro = (id) => {
     for (const x in Cards) {
@@ -124,7 +127,9 @@ export const ColumnOfCards = ({ ChildCards, cardsStatus }) => {
       }
     }
     setCards([...Cards]);
+    CardsToParent([...Cards]);
   };
+
   const reverseStatusFin = (id) => {
     for (const x in Cards) {
       if (Cards[x].id === id) {
@@ -136,6 +141,7 @@ export const ColumnOfCards = ({ ChildCards, cardsStatus }) => {
       }
     }
     setCards([...Cards]);
+    CardsToParent([...Cards]);
   };
 
   const todosApi = axios.create({
@@ -173,6 +179,7 @@ export const ColumnOfCards = ({ ChildCards, cardsStatus }) => {
   useEffect(() => {
     getTodoList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    console.log("Use effect Child");
   }, []);
 
   const handleChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {

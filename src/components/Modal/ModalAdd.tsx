@@ -17,7 +17,7 @@ import React, { useState } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import axios from "axios";
 
-export const ModalAdd = ({ ChildCard }) => {
+export const ModalAdd = ({ CardToParent }) => {
   var nowDate = new Date().toISOString().slice(0, 10);
   const [open, setOpen] = React.useState(false);
   const [date, setDate] = useState(nowDate);
@@ -65,7 +65,7 @@ export const ModalAdd = ({ ChildCard }) => {
       dueDate: date,
     };
     setTodo(SingleCard);
-    ChildCard(SingleCard);
+    CardToParent(SingleCard);
     setText("");
 
     setDate("");
