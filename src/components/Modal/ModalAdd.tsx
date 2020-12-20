@@ -16,7 +16,6 @@ import {
 import React, { useState } from "react";
 import AddIcon from "@material-ui/icons/Add";
 import axios from "axios";
-import { useStyles } from "@material-ui/pickers/views/Calendar/SlideTransition";
 
 export const ModalAdd = ({ ChildCard }) => {
   var nowDate = new Date().toISOString().slice(0, 10);
