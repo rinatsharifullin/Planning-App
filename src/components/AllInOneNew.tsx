@@ -21,7 +21,6 @@ import {
 import React, { useEffect, useState } from "react";
 import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@material-ui/icons/Add";
-import InputIcon from "@material-ui/icons/Input";
 import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
@@ -199,14 +198,14 @@ export const AllInOneContainer = () => {
 
   async function removeTodo(id) {
     try {
-      const response = await todosApi.post("/removeTodo", { id });
+      await todosApi.post("/removeTodo", { id });
     } catch (e) {
       console.log(e);
     }
   }
   useEffect(() => {
-    getTodoList(); // this is a reference to a function inside our mapDispatchToProps
-    //eslint-disable-next-line react-hooks/exhaustive-deps
+    getTodoList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   //Axios get Cards from server------------------
 
@@ -336,151 +335,150 @@ export const AllInOneContainer = () => {
             </Box>
             {/* //Card------------------------ */}
             {Cards.filter((item) => item.status === "todo").map((item) => {
-              if (item.description)
-                return (
-                  <Box
-                    p={1}
-                    key={item.id}
-                    bgcolor={
-                      item.status === "inProgress"
-                        ? "success.main"
-                        : item.status === "completed"
-                        ? "info.main"
-                        : "warning.main"
-                    }
+              return (
+                <Box
+                  p={1}
+                  key={item.id}
+                  bgcolor={
+                    item.status === "inProgress"
+                      ? "success.main"
+                      : item.status === "completed"
+                      ? "info.main"
+                      : "warning.main"
+                  }
+                >
+                  <Card
+                    style={{
+                      backgroundColor:
+                        Date.now() > Date.parse(item.dueDate)
+                          ? "PapayaWhip"
+                          : "white",
+                    }}
                   >
-                    <Card
-                      style={{
-                        backgroundColor:
-                          Date.now() > Date.parse(item.dueDate)
-                            ? "PapayaWhip"
-                            : "white",
-                      }}
-                    >
-                      <CardContent>
-                        <Typography variant="h6">{item.description}</Typography>
-                        <Typography color="textSecondary">
-                          {item.dueDate.slice(0, 10)}
-                        </Typography>
-                      </CardContent>
-                      <CardActions>
-                        {/* //Buttons for Card---------------------- */}
-                        <div>
-                          <Grid container justify="center" spacing={2}>
-                            <Box p={1}>
-                              {/* //Modal Edit---------------------- */}
-                              <div>
-                                <Fab
-                                  size="small"
-                                  color={"primary"}
-                                  aria-label="edit"
-                                  onClick={() => {
-                                    handleOpenEdit(item.id);
-                                  }}
-                                >
-                                  <EditIcon />
-                                </Fab>
-                                <Modal
-                                  aria-labelledby="transition-modal-title"
-                                  aria-describedby="transition-modal-description"
-                                  className={classes.modal}
-                                  open={openEdit}
-                                  onClose={handleClose}
-                                  closeAfterTransition
-                                  BackdropComponent={Backdrop}
-                                  BackdropProps={{
-                                    timeout: 500,
-                                  }}
-                                >
-                                  <Fade in={openEdit}>
-                                    {/* Card in Modal----------------------- */}
-                                    <Card>
-                                      <CardContent>
-                                        <form
-                                          className={classes.root}
-                                          noValidate
-                                          autoComplete="off"
-                                        >
-                                          <TextField
-                                            id="standard-basic"
-                                            label="Description"
-                                            multiline
-                                            value={text}
-                                            onChange={handleChangeText}
-                                            autoFocus
-                                          />
-                                        </form>
-                                        <form
-                                          className={classes.container}
-                                          noValidate
-                                        >
-                                          <TextField
-                                            onChange={handleChangeDate}
-                                            id="date"
-                                            label="Select Date and Time"
-                                            type="date"
-                                            defaultValue={date}
-                                            className={classes.textField}
-                                            InputLabelProps={{
-                                              shrink: true,
-                                            }}
-                                          />
-                                        </form>
-                                      </CardContent>
-                                      <CardActions>
-                                        <ButtonGroup
-                                          variant="text"
-                                          color="primary"
-                                          aria-label="text primary button group"
-                                        >
-                                          <Button onClick={handleCloseOkEdit}>
-                                            OK
-                                          </Button>
-                                          <Button onClick={handleCloseEdit}>
-                                            Cancel
-                                          </Button>
-                                        </ButtonGroup>
-                                      </CardActions>
-                                    </Card>
-                                    {/* Card in Modal----------------------- */}
-                                  </Fade>
-                                </Modal>
-                              </div>
-                              {/* //Modal Edit---------------------- */}
-                            </Box>
-                            <Box p={1}>
+                    <CardContent>
+                      <Typography variant="h6">{item.description}</Typography>
+                      <Typography color="textSecondary">
+                        {item.dueDate.slice(0, 10)}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      {/* //Buttons for Card---------------------- */}
+                      <div>
+                        <Grid container justify="center" spacing={2}>
+                          <Box p={1}>
+                            {/* //Modal Edit---------------------- */}
+                            <div>
                               <Fab
-                                color="secondary"
-                                aria-label="delete"
                                 size="small"
+                                color={"primary"}
+                                aria-label="edit"
                                 onClick={() => {
-                                  setCards(
-                                    Cards.filter(
-                                      (myitem) => myitem.id !== item.id
-                                    )
-                                  );
-                                  removeTodo(item.id);
+                                  handleOpenEdit(item.id);
                                 }}
                               >
-                                <DeleteIcon />
+                                <EditIcon />
                               </Fab>
-                            </Box>
-                            <Box p={1}>
-                              <Fab
-                                aria-label="input"
-                                size="small"
-                                onClick={() => updateStatusNew(item.id)}
+                              <Modal
+                                aria-labelledby="transition-modal-title"
+                                aria-describedby="transition-modal-description"
+                                className={classes.modal}
+                                open={openEdit}
+                                onClose={handleClose}
+                                closeAfterTransition
+                                BackdropComponent={Backdrop}
+                                BackdropProps={{
+                                  timeout: 500,
+                                }}
                               >
-                                <ArrowForwardIcon />
-                              </Fab>
-                            </Box>
-                          </Grid>
-                        </div>
-                        {/* //Buttons for Card---------------------- */}
-                      </CardActions>
-                    </Card>
-                  </Box>
-                );
+                                <Fade in={openEdit}>
+                                  {/* Card in Modal----------------------- */}
+                                  <Card>
+                                    <CardContent>
+                                      <form
+                                        className={classes.root}
+                                        noValidate
+                                        autoComplete="off"
+                                      >
+                                        <TextField
+                                          id="standard-basic"
+                                          label="Description"
+                                          multiline
+                                          value={text}
+                                          onChange={handleChangeText}
+                                          autoFocus
+                                        />
+                                      </form>
+                                      <form
+                                        className={classes.container}
+                                        noValidate
+                                      >
+                                        <TextField
+                                          onChange={handleChangeDate}
+                                          id="date"
+                                          label="Select Date and Time"
+                                          type="date"
+                                          defaultValue={date}
+                                          className={classes.textField}
+                                          InputLabelProps={{
+                                            shrink: true,
+                                          }}
+                                        />
+                                      </form>
+                                    </CardContent>
+                                    <CardActions>
+                                      <ButtonGroup
+                                        variant="text"
+                                        color="primary"
+                                        aria-label="text primary button group"
+                                      >
+                                        <Button onClick={handleCloseOkEdit}>
+                                          OK
+                                        </Button>
+                                        <Button onClick={handleCloseEdit}>
+                                          Cancel
+                                        </Button>
+                                      </ButtonGroup>
+                                    </CardActions>
+                                  </Card>
+                                  {/* Card in Modal----------------------- */}
+                                </Fade>
+                              </Modal>
+                            </div>
+                            {/* //Modal Edit---------------------- */}
+                          </Box>
+                          <Box p={1}>
+                            <Fab
+                              color="secondary"
+                              aria-label="delete"
+                              size="small"
+                              onClick={() => {
+                                setCards(
+                                  Cards.filter(
+                                    (myitem) => myitem.id !== item.id
+                                  )
+                                );
+                                removeTodo(item.id);
+                              }}
+                            >
+                              <DeleteIcon />
+                            </Fab>
+                          </Box>
+                          <Box p={1}>
+                            <Fab
+                              aria-label="input"
+                              size="small"
+                              onClick={() => updateStatusNew(item.id)}
+                            >
+                              <ArrowForwardIcon />
+                            </Fab>
+                          </Box>
+                        </Grid>
+                      </div>
+                      {/* //Buttons for Card---------------------- */}
+                    </CardActions>
+                  </Card>
+                </Box>
+              );
             })}
             {/* //Card------------------------ */}
           </Paper>
@@ -495,178 +493,6 @@ export const AllInOneContainer = () => {
             {/* //Card------------------------ */}
             {Cards.filter((item) => item.status === "inProgress").map(
               (item) => {
-                if (item.description)
-                  return (
-                    <Box
-                      p={1}
-                      key={item.id}
-                      bgcolor={
-                        item.status === "inProgress"
-                          ? "success.main"
-                          : item.status === "completed"
-                          ? "info.main"
-                          : "warning.main"
-                      }
-                    >
-                      <Card
-                        style={{
-                          backgroundColor:
-                            Date.now() > Date.parse(item.dueDate)
-                              ? "PapayaWhip"
-                              : "white",
-                        }}
-                      >
-                        <CardContent>
-                          <Typography variant="h6">
-                            {item.description}
-                          </Typography>
-                          <Typography color="textSecondary">
-                            {item.dueDate.slice(0, 10)}
-                          </Typography>
-                        </CardContent>
-                        <CardActions>
-                          {/* //Buttons for Card---------------------- */}
-                          <div>
-                            <Grid container justify="center" spacing={2}>
-                              <Box p={1}>
-                                <Fab
-                                  aria-label="input"
-                                  size="small"
-                                  onClick={() => reverseStatusPro(item.id)}
-                                >
-                                  <ArrowBackIcon />
-                                </Fab>
-                              </Box>
-
-                              <Box p={1}>
-                                {/* //Modal Edit---------------------- */}
-                                <div>
-                                  <Fab
-                                    size="small"
-                                    color={"primary"}
-                                    aria-label="edit"
-                                    onClick={() => {
-                                      handleOpenEdit(item.id);
-                                    }}
-                                  >
-                                    <EditIcon />
-                                  </Fab>
-                                  <Modal
-                                    aria-labelledby="transition-modal-title"
-                                    aria-describedby="transition-modal-description"
-                                    className={classes.modal}
-                                    open={openEdit}
-                                    onClose={handleClose}
-                                    closeAfterTransition
-                                    BackdropComponent={Backdrop}
-                                    BackdropProps={{
-                                      timeout: 500,
-                                    }}
-                                  >
-                                    <Fade in={openEdit}>
-                                      {/* Card in Modal----------------------- */}
-                                      <Card>
-                                        <CardContent>
-                                          <form
-                                            className={classes.root}
-                                            noValidate
-                                            autoComplete="off"
-                                          >
-                                            <TextField
-                                              id="standard-basic"
-                                              label="Description"
-                                              multiline
-                                              value={text}
-                                              onChange={handleChangeText}
-                                              autoFocus
-                                            />
-                                          </form>
-                                          <form
-                                            className={classes.container}
-                                            noValidate
-                                          >
-                                            <TextField
-                                              onChange={handleChangeDate}
-                                              id="date"
-                                              label="Select Date and Time"
-                                              type="date"
-                                              defaultValue={date}
-                                              className={classes.textField}
-                                              InputLabelProps={{
-                                                shrink: true,
-                                              }}
-                                            />
-                                          </form>
-                                        </CardContent>
-                                        <CardActions>
-                                          <ButtonGroup
-                                            variant="text"
-                                            color="primary"
-                                            aria-label="text primary button group"
-                                          >
-                                            <Button onClick={handleCloseOkEdit}>
-                                              OK
-                                            </Button>
-                                            <Button onClick={handleCloseEdit}>
-                                              Cancel
-                                            </Button>
-                                          </ButtonGroup>
-                                        </CardActions>
-                                      </Card>
-                                      {/* Card in Modal----------------------- */}
-                                    </Fade>
-                                  </Modal>
-                                </div>
-                                {/* //Modal Edit---------------------- */}
-                              </Box>
-                              <Box p={1}>
-                                <Fab
-                                  color="secondary"
-                                  aria-label="delete"
-                                  size="small"
-                                  onClick={() => {
-                                    setCards(
-                                      Cards.filter(
-                                        (myitem) => myitem.id !== item.id
-                                      )
-                                    );
-                                    removeTodo(item.id);
-                                  }}
-                                >
-                                  <DeleteIcon />
-                                </Fab>
-                              </Box>
-                              <Box p={1}>
-                                <Fab
-                                  aria-label="input"
-                                  size="small"
-                                  onClick={() => updateStatusPro(item.id)}
-                                >
-                                  <ArrowForwardIcon />
-                                </Fab>
-                              </Box>
-                            </Grid>
-                          </div>
-                          {/* //Buttons for Card---------------------- */}
-                        </CardActions>
-                      </Card>
-                    </Box>
-                  );
-              }
-            )}
-            {/* //Card------------------------ */}
-          </Paper>
-        </Grid>
-
-        {/* Finished column */}
-        <Grid item xs={4}>
-          <Paper elevation={2}>
-            <Box p={1} bgcolor={"info.main"}>
-              <Typography variant="h5">Finished</Typography>
-            </Box>
-            {/* //Card------------------------ */}
-            {Cards.filter((item) => item.status === "completed").map((item) => {
-              if (item.description)
                 return (
                   <Box
                     p={1}
@@ -701,16 +527,16 @@ export const AllInOneContainer = () => {
                               <Fab
                                 aria-label="input"
                                 size="small"
-                                onClick={() => reverseStatusFin(item.id)}
+                                onClick={() => reverseStatusPro(item.id)}
                               >
                                 <ArrowBackIcon />
                               </Fab>
                             </Box>
+
                             <Box p={1}>
                               {/* //Modal Edit---------------------- */}
                               <div>
                                 <Fab
-                                  disabled
                                   size="small"
                                   color={"primary"}
                                   aria-label="edit"
@@ -805,6 +631,15 @@ export const AllInOneContainer = () => {
                                 <DeleteIcon />
                               </Fab>
                             </Box>
+                            <Box p={1}>
+                              <Fab
+                                aria-label="input"
+                                size="small"
+                                onClick={() => updateStatusPro(item.id)}
+                              >
+                                <ArrowForwardIcon />
+                              </Fab>
+                            </Box>
                           </Grid>
                         </div>
                         {/* //Buttons for Card---------------------- */}
@@ -812,6 +647,165 @@ export const AllInOneContainer = () => {
                     </Card>
                   </Box>
                 );
+              }
+            )}
+            {/* //Card------------------------ */}
+          </Paper>
+        </Grid>
+
+        {/* Finished column */}
+        <Grid item xs={4}>
+          <Paper elevation={2}>
+            <Box p={1} bgcolor={"info.main"}>
+              <Typography variant="h5">Finished</Typography>
+            </Box>
+            {/* //Card------------------------ */}
+            {Cards.filter((item) => item.status === "completed").map((item) => {
+              return (
+                <Box
+                  p={1}
+                  key={item.id}
+                  bgcolor={
+                    item.status === "inProgress"
+                      ? "success.main"
+                      : item.status === "completed"
+                      ? "info.main"
+                      : "warning.main"
+                  }
+                >
+                  <Card
+                    style={{
+                      backgroundColor:
+                        Date.now() > Date.parse(item.dueDate)
+                          ? "PapayaWhip"
+                          : "white",
+                    }}
+                  >
+                    <CardContent>
+                      <Typography variant="h6">{item.description}</Typography>
+                      <Typography color="textSecondary">
+                        {item.dueDate.slice(0, 10)}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      {/* //Buttons for Card---------------------- */}
+                      <div>
+                        <Grid container justify="center" spacing={2}>
+                          <Box p={1}>
+                            <Fab
+                              aria-label="input"
+                              size="small"
+                              onClick={() => reverseStatusFin(item.id)}
+                            >
+                              <ArrowBackIcon />
+                            </Fab>
+                          </Box>
+                          <Box p={1}>
+                            {/* //Modal Edit---------------------- */}
+                            <div>
+                              <Fab
+                                disabled
+                                size="small"
+                                color={"primary"}
+                                aria-label="edit"
+                                onClick={() => {
+                                  handleOpenEdit(item.id);
+                                }}
+                              >
+                                <EditIcon />
+                              </Fab>
+                              <Modal
+                                aria-labelledby="transition-modal-title"
+                                aria-describedby="transition-modal-description"
+                                className={classes.modal}
+                                open={openEdit}
+                                onClose={handleClose}
+                                closeAfterTransition
+                                BackdropComponent={Backdrop}
+                                BackdropProps={{
+                                  timeout: 500,
+                                }}
+                              >
+                                <Fade in={openEdit}>
+                                  {/* Card in Modal----------------------- */}
+                                  <Card>
+                                    <CardContent>
+                                      <form
+                                        className={classes.root}
+                                        noValidate
+                                        autoComplete="off"
+                                      >
+                                        <TextField
+                                          id="standard-basic"
+                                          label="Description"
+                                          multiline
+                                          value={text}
+                                          onChange={handleChangeText}
+                                          autoFocus
+                                        />
+                                      </form>
+                                      <form
+                                        className={classes.container}
+                                        noValidate
+                                      >
+                                        <TextField
+                                          onChange={handleChangeDate}
+                                          id="date"
+                                          label="Select Date and Time"
+                                          type="date"
+                                          defaultValue={date}
+                                          className={classes.textField}
+                                          InputLabelProps={{
+                                            shrink: true,
+                                          }}
+                                        />
+                                      </form>
+                                    </CardContent>
+                                    <CardActions>
+                                      <ButtonGroup
+                                        variant="text"
+                                        color="primary"
+                                        aria-label="text primary button group"
+                                      >
+                                        <Button onClick={handleCloseOkEdit}>
+                                          OK
+                                        </Button>
+                                        <Button onClick={handleCloseEdit}>
+                                          Cancel
+                                        </Button>
+                                      </ButtonGroup>
+                                    </CardActions>
+                                  </Card>
+                                  {/* Card in Modal----------------------- */}
+                                </Fade>
+                              </Modal>
+                            </div>
+                            {/* //Modal Edit---------------------- */}
+                          </Box>
+                          <Box p={1}>
+                            <Fab
+                              color="secondary"
+                              aria-label="delete"
+                              size="small"
+                              onClick={() => {
+                                setCards(
+                                  Cards.filter(
+                                    (myitem) => myitem.id !== item.id
+                                  )
+                                );
+                                removeTodo(item.id);
+                              }}
+                            >
+                              <DeleteIcon />
+                            </Fab>
+                          </Box>
+                        </Grid>
+                      </div>
+                      {/* //Buttons for Card---------------------- */}
+                    </CardActions>
+                  </Card>
+                </Box>
+              );
             })}
             {/* //Card------------------------ */}
           </Paper>
