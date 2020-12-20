@@ -25,6 +25,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import axios from "axios";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import { ModalAdd } from "./Modal/ModalAdd";
 
 export const AllInOneContainer = () => {
   var nowDate = new Date().toISOString().slice(0, 10);
@@ -102,20 +103,6 @@ export const AllInOneContainer = () => {
   };
   const handleClose = () => {
     setText("");
-    setOpen(false);
-  };
-  const handleCloseOk = () => {
-    SingleCard = {
-      id: Date.now(),
-      description: text,
-      status: "todo",
-      dueDate: date,
-    };
-    setTodo(SingleCard);
-    if (text) setCards([...Cards, SingleCard]);
-    setText("");
-
-    setDate("");
     setOpen(false);
   };
 
@@ -261,70 +248,7 @@ export const AllInOneContainer = () => {
         Planning App
       </Typography>
       {/* //Modal---------------------- */}
-      <div>
-        <Fab
-          size="small"
-          color={"primary"}
-          aria-label="edit"
-          onClick={handleOpen}
-        >
-          <AddIcon />
-        </Fab>
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={open}>
-            {/* Card in Modal----------------------- */}
-            <Card>
-              <CardContent>
-                <form className={classes.root} noValidate autoComplete="off">
-                  <TextField
-                    id="standard-basic"
-                    label="Description"
-                    multiline
-                    value={text}
-                    onChange={handleChangeText}
-                    autoFocus
-                  />
-                </form>
-                <form className={classes.container} noValidate>
-                  <TextField
-                    onChange={handleChangeDate}
-                    id="date"
-                    label="Select Date and Time"
-                    type="date"
-                    defaultValue={date}
-                    className={classes.textField}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </form>
-              </CardContent>
-              <CardActions>
-                <ButtonGroup
-                  variant="text"
-                  color="primary"
-                  aria-label="text primary button group"
-                >
-                  <Button onClick={handleCloseOk}>OK</Button>
-                  <Button onClick={handleClose}>Cancel</Button>
-                </ButtonGroup>
-              </CardActions>
-            </Card>
-            {/* Card in Modal----------------------- */}
-          </Fade>
-        </Modal>
-      </div>
+      <ModalAdd ChildCard={(cards) => setCards([...Cards, cards])} />
       {/* //Modal---------------------- */}
       <Grid container justify="center" spacing={2}>
         {/* New status Column */}
