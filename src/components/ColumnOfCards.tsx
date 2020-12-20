@@ -24,7 +24,7 @@ import ArrowForwardIcon from "@material-ui/icons/ArrowForward";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import axios from "axios";
 
-export const ColumnOfCards = ({ ChildCards }) => {
+export const ColumnOfCards = ({ ChildCards, cardsStatus }) => {
   var nowDate = new Date().toISOString().slice(0, 10);
   const [text, setText] = useState("");
   const [Cards, setCards] = useState([...ChildCards]);
@@ -93,6 +93,42 @@ export const ColumnOfCards = ({ ChildCards }) => {
     for (const x in Cards) {
       if (Cards[x].id === id) {
         if (Cards[x].status === "todo") {
+          Cards[x].status = "inProgress";
+          updateTodo(Cards[x]);
+          break;
+        }
+      }
+    }
+    setCards([...Cards]);
+  };
+  const updateStatusPro = (id) => {
+    for (const x in Cards) {
+      if (Cards[x].id === id) {
+        if (Cards[x].status === "inProgress") {
+          Cards[x].status = "completed";
+          updateTodo(Cards[x]);
+          break;
+        }
+      }
+    }
+    setCards([...Cards]);
+  };
+  const reverseStatusPro = (id) => {
+    for (const x in Cards) {
+      if (Cards[x].id === id) {
+        if (Cards[x].status === "inProgress") {
+          Cards[x].status = "todo";
+          updateTodo(Cards[x]);
+          break;
+        }
+      }
+    }
+    setCards([...Cards]);
+  };
+  const reverseStatusFin = (id) => {
+    for (const x in Cards) {
+      if (Cards[x].id === id) {
+        if (Cards[x].status === "completed") {
           Cards[x].status = "inProgress";
           updateTodo(Cards[x]);
           break;
@@ -186,7 +222,7 @@ export const ColumnOfCards = ({ ChildCards }) => {
           <Typography variant="h5">New</Typography>
         </Box>
         {/* //Card------------------------ */}
-        {Cards.filter((item) => item.status === "todo").map((item) => {
+        {Cards.filter((item) => item.status == cardsStatus).map((item) => {
           return (
             <Box
               p={1}
@@ -217,6 +253,21 @@ export const ColumnOfCards = ({ ChildCards }) => {
                   {/* //Buttons for Card---------------------- */}
                   <div>
                     <Grid container justify="center" spacing={2}>
+                      <Box p={1}>
+                        <Fab
+                          aria-label="input"
+                          size="small"
+                          onClick={() =>
+                            cardsStatus === "inProgress"
+                              ? reverseStatusPro(item.id)
+                              : cardsStatus === "completed"
+                              ? reverseStatusFin(item.id)
+                              : true
+                          }
+                        >
+                          <ArrowBackIcon />
+                        </Fab>
+                      </Box>
                       <Box p={1}>
                         {/* //Modal Edit---------------------- */}
                         <div>
@@ -317,7 +368,13 @@ export const ColumnOfCards = ({ ChildCards }) => {
                         <Fab
                           aria-label="input"
                           size="small"
-                          onClick={() => updateStatusNew(item.id)}
+                          onClick={() =>
+                            cardsStatus === "todo"
+                              ? updateStatusNew(item.id)
+                              : cardsStatus === "inProgress"
+                              ? updateStatusPro(item.id)
+                              : true
+                          }
                         >
                           <ArrowForwardIcon />
                         </Fab>
