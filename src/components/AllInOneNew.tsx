@@ -9,7 +9,6 @@ export const AllInOneContainer = () => {
   const [text, setText] = useState("");
   const [date, setDate] = useState(nowDate);
   const [open, setOpen] = React.useState(false);
-  const [openEdit, setOpenEdit] = React.useState(false);
   const [idEdit, setIdEdit] = useState(0);
   const [statusEdit, setStatusEdit] = useState("");
   const [Cards, setCards] = useState([
@@ -77,10 +76,12 @@ export const AllInOneContainer = () => {
   const handleOpen = () => {
     setOpen(true);
     setDate(nowDate);
+    console.log("Open");
   };
   const handleClose = () => {
     setText("");
     setOpen(false);
+    console.log("Close");
   };
   const handleCloseOk = () => {
     SingleCard = {
@@ -95,6 +96,7 @@ export const AllInOneContainer = () => {
 
     setDate("");
     setOpen(false);
+    console.log("CloseOk");
   };
 
   // ---------------------
@@ -108,12 +110,8 @@ export const AllInOneContainer = () => {
         break;
       }
     }
-    setOpenEdit(true);
-  };
-
-  const handleCloseEdit = () => {
-    setText("");
-    setOpenEdit(false);
+    setOpen(true);
+    console.log("OpenEdit");
   };
 
   const handleCloseOkEdit = () => {
@@ -137,7 +135,12 @@ export const AllInOneContainer = () => {
     }
     setText("");
     setDate("");
-    setOpenEdit(false);
+    setOpen(false);
+    console.log("CloseOkEdit");
+  };
+
+  const handleOpenChild = (id, edit) => {
+    edit ? handleOpenEdit(id) : handleOpen();
   };
 
   const handleRemoveCard = (id) => {
@@ -159,6 +162,7 @@ export const AllInOneContainer = () => {
       ? updateStatusPro(id)
       : true;
   };
+
   // ---------------------
 
   //Axios get Cards from server------------------
@@ -223,74 +227,72 @@ export const AllInOneContainer = () => {
       <Typography variant="h4" align="center" color="textPrimary" gutterBottom>
         Planning App
       </Typography>
+
       {/* //Modal---------------------- */}
       <AddItemModal
-        handleOpen={handleOpen}
         open={open}
         handleClose={handleClose}
         text={text}
         handleChangeText={handleChangeText}
         handleChangeDate={handleChangeDate}
         date={date}
-        handleCloseOk={handleCloseOk}
+        handleCloseOkGen={handleCloseOk}
+        handleOpenChild={handleOpenChild}
+        edit={false}
+        id={0}
       />
       {/* //Modal---------------------- */}
+
       <Grid container justify="center" spacing={2}>
         {/* New status Column */}
         <SingleColumn
           Cards={Cards}
-          handleOpenEdit={handleOpenEdit}
-          openEdit={openEdit}
           handleClose={handleClose}
           text={text}
           date={date}
           handleChangeText={handleChangeText}
           handleChangeDate={handleChangeDate}
-          handleCloseOkEdit={handleCloseOkEdit}
-          handleCloseEdit={handleCloseEdit}
+          handleCloseOkGen={handleCloseOkEdit}
           handleRemoveCard={handleRemoveCard}
-          updateStatusNew={updateStatusNew}
           status="todo"
           handleMoveLeft={handleMoveLeft}
           handleMoveRight={handleMoveRight}
+          handleOpenChild={handleOpenChild}
+          open={open}
         />
 
         {/* In Progress Column */}
         <SingleColumn
           Cards={Cards}
-          handleOpenEdit={handleOpenEdit}
-          openEdit={openEdit}
           handleClose={handleClose}
           text={text}
           date={date}
           handleChangeText={handleChangeText}
           handleChangeDate={handleChangeDate}
-          handleCloseOkEdit={handleCloseOkEdit}
-          handleCloseEdit={handleCloseEdit}
+          handleCloseOkGen={handleCloseOkEdit}
           handleRemoveCard={handleRemoveCard}
-          updateStatusNew={updateStatusNew}
           status="inProgress"
           handleMoveLeft={handleMoveLeft}
           handleMoveRight={handleMoveRight}
+          handleOpenChild={handleOpenChild}
+          open={open}
         />
 
         {/* Finished column */}
         <SingleColumn
           Cards={Cards}
-          handleOpenEdit={handleOpenEdit}
-          openEdit={openEdit}
           handleClose={handleClose}
           text={text}
           date={date}
           handleChangeText={handleChangeText}
           handleChangeDate={handleChangeDate}
-          handleCloseOkEdit={handleCloseOkEdit}
-          handleCloseEdit={handleCloseEdit}
+          handleCloseOkGen={handleCloseOkEdit}
           handleRemoveCard={handleRemoveCard}
-          updateStatusNew={updateStatusNew}
           status="completed"
           handleMoveLeft={handleMoveLeft}
           handleMoveRight={handleMoveRight}
+          handleOpenChild={handleOpenChild}
+          open={open}
         />
       </Grid>
     </Container>

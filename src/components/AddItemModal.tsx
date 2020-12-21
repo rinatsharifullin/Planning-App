@@ -15,16 +15,19 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
 
 export const AddItemModal = ({
-  handleOpen,
   open,
   handleClose,
   text,
   handleChangeText,
   handleChangeDate,
   date,
-  handleCloseOk,
+  handleCloseOkGen,
+  handleOpenChild,
+  edit,
+  id,
 }) => {
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -60,9 +63,9 @@ export const AddItemModal = ({
         size="small"
         color={"primary"}
         aria-label="edit"
-        onClick={handleOpen}
+        onClick={() => handleOpenChild(id, edit)}
       >
-        <AddIcon />
+        {edit ? <EditIcon /> : <AddIcon />}
       </Fab>
       <Modal
         aria-labelledby="transition-modal-title"
@@ -110,7 +113,7 @@ export const AddItemModal = ({
                 color="primary"
                 aria-label="text primary button group"
               >
-                <Button onClick={handleCloseOk}>OK</Button>
+                <Button onClick={handleCloseOkGen}>OK</Button>
                 <Button onClick={handleClose}>Cancel</Button>
               </ButtonGroup>
             </CardActions>
