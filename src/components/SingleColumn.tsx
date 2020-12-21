@@ -36,6 +36,9 @@ export const SingleColumn = ({
   handleCloseEdit,
   handleRemoveCard,
   updateStatusNew,
+  status,
+  handleMoveLeft,
+  handleMoveRight,
 }) => {
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -72,11 +75,26 @@ export const SingleColumn = ({
   return (
     <Grid item xs={4}>
       <Paper elevation={2}>
-        <Box p={1} bgcolor={"warning.main"}>
-          <Typography variant="h5">New</Typography>
+        <Box
+          p={1}
+          bgcolor={
+            status === "todo"
+              ? "warning.main"
+              : status === "inProgress"
+              ? "success.main"
+              : "info.main"
+          }
+        >
+          <Typography variant="h5">
+            {status === "todo"
+              ? "New"
+              : status === "inProgress"
+              ? "In Progress"
+              : "Finished"}
+          </Typography>
         </Box>
         {/* //Card------------------------ */}
-        {Cards.filter((item) => item.status === "todo").map((item) => {
+        {Cards.filter((item) => item.status === status).map((item) => {
           console.log(Cards);
           return (
             <Box
@@ -108,6 +126,15 @@ export const SingleColumn = ({
                   {/* //Buttons for Card---------------------- */}
                   <div>
                     <Grid container justify="center" spacing={2}>
+                      <Box p={1}>
+                        <Fab
+                          aria-label="input"
+                          size="small"
+                          onClick={() => handleMoveLeft(item.status, item.id)}
+                        >
+                          <ArrowBackIcon />
+                        </Fab>
+                      </Box>
                       <Box p={1}>
                         {/* //Modal Edit---------------------- */}
                         <div>
@@ -203,7 +230,7 @@ export const SingleColumn = ({
                         <Fab
                           aria-label="input"
                           size="small"
-                          onClick={() => updateStatusNew(item.id)}
+                          onClick={() => handleMoveRight(item.status, item.id)}
                         >
                           <ArrowForwardIcon />
                         </Fab>
