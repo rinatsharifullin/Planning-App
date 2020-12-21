@@ -1,16 +1,20 @@
 import { Container, Grid, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-
 import axios from "axios";
 import { AddItemModal } from "./AddItemModal";
 import { SingleColumn } from "./SingleColumn";
 
-
 export const AllInOneContainer = () => {
+  var nowDate = new Date().toISOString().slice(0, 10);
+  const [text, setText] = useState("");
+  const [date, setDate] = useState(nowDate);
+  const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [idEdit, setIdEdit] = useState(0);
+  const [statusEdit, setStatusEdit] = useState("");
   const [Cards, setCards] = useState([
     { id: 0, description: "", status: "", dueDate: "" },
   ]);
-
   type singleCard = {
     id: number;
     description: string;
@@ -212,24 +216,14 @@ export const AllInOneContainer = () => {
   };
   //Text----------------------
 
-
-
   //DOM----------------------
-  // useEffect(() => {
-  //   console.log("Use effect Parent");
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-  const updateCards = (cards) => {
-    setCards([...cards]);
-    console.log(cards);
-  };
+
   return (
     <Container maxWidth="md" component="main">
       <Typography variant="h4" align="center" color="textPrimary" gutterBottom>
         Planning App
       </Typography>
       {/* //Modal---------------------- */}
-
       <AddItemModal
         handleOpen={handleOpen}
         open={open}
@@ -239,12 +233,10 @@ export const AllInOneContainer = () => {
         handleChangeDate={handleChangeDate}
         date={date}
         handleCloseOk={handleCloseOk}
-
       />
       {/* //Modal---------------------- */}
       <Grid container justify="center" spacing={2}>
         {/* New status Column */}
-
         <SingleColumn
           Cards={Cards}
           handleOpenEdit={handleOpenEdit}
@@ -299,8 +291,6 @@ export const AllInOneContainer = () => {
           status="completed"
           handleMoveLeft={handleMoveLeft}
           handleMoveRight={handleMoveRight}
-
-        
         />
       </Grid>
     </Container>
