@@ -9,6 +9,7 @@ export const AllInOneContainer = () => {
   const [text, setText] = useState("");
   const [date, setDate] = useState(nowDate);
   const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
   const [idEdit, setIdEdit] = useState(0);
   const [statusEdit, setStatusEdit] = useState("");
   const [Cards, setCards] = useState([
@@ -100,6 +101,11 @@ export const AllInOneContainer = () => {
   };
 
   // ---------------------
+  const handleCloseEdit = () => {
+    setText("");
+    setOpenEdit(false);
+    console.log("CloseEdit");
+  };
   const handleOpenEdit = (id) => {
     for (const x of Cards) {
       if (x.id === id) {
@@ -110,7 +116,7 @@ export const AllInOneContainer = () => {
         break;
       }
     }
-    setOpen(true);
+    setOpenEdit(true);
     console.log("OpenEdit");
   };
 
@@ -135,13 +141,13 @@ export const AllInOneContainer = () => {
     }
     setText("");
     setDate("");
-    setOpen(false);
+    setOpenEdit(false);
     console.log("CloseOkEdit");
   };
 
-  const handleOpenChild = (id, edit) => {
-    edit ? handleOpenEdit(id) : handleOpen();
-  };
+  // const handleOpenChild = (id, edit) => {
+  //   edit ? handleOpenEdit(id) : handleOpen();
+  // };
 
   const handleRemoveCard = (id) => {
     setCards(Cards.filter((myitem) => myitem.id !== id));
@@ -237,7 +243,7 @@ export const AllInOneContainer = () => {
         handleChangeDate={handleChangeDate}
         date={date}
         handleCloseOkGen={handleCloseOk}
-        handleOpenChild={handleOpenChild}
+        handleOpenChild={handleOpen}
         edit={false}
         id={0}
       />
@@ -247,7 +253,7 @@ export const AllInOneContainer = () => {
         {/* New status Column */}
         <SingleColumn
           Cards={Cards}
-          handleClose={handleClose}
+          handleClose={handleCloseEdit}
           text={text}
           date={date}
           handleChangeText={handleChangeText}
@@ -257,14 +263,14 @@ export const AllInOneContainer = () => {
           status="todo"
           handleMoveLeft={handleMoveLeft}
           handleMoveRight={handleMoveRight}
-          handleOpenChild={handleOpenChild}
-          open={open}
+          handleOpenChild={handleOpenEdit}
+          open={openEdit}
         />
 
         {/* In Progress Column */}
         <SingleColumn
           Cards={Cards}
-          handleClose={handleClose}
+          handleClose={handleCloseEdit}
           text={text}
           date={date}
           handleChangeText={handleChangeText}
@@ -274,14 +280,14 @@ export const AllInOneContainer = () => {
           status="inProgress"
           handleMoveLeft={handleMoveLeft}
           handleMoveRight={handleMoveRight}
-          handleOpenChild={handleOpenChild}
-          open={open}
+          handleOpenChild={handleOpenEdit}
+          open={openEdit}
         />
 
         {/* Finished column */}
         <SingleColumn
           Cards={Cards}
-          handleClose={handleClose}
+          handleClose={handleCloseEdit}
           text={text}
           date={date}
           handleChangeText={handleChangeText}
@@ -291,8 +297,8 @@ export const AllInOneContainer = () => {
           status="completed"
           handleMoveLeft={handleMoveLeft}
           handleMoveRight={handleMoveRight}
-          handleOpenChild={handleOpenChild}
-          open={open}
+          handleOpenChild={handleOpenEdit}
+          open={openEdit}
         />
       </Grid>
     </Container>
