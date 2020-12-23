@@ -8,9 +8,9 @@ export const AllInOneContainer = () => {
   var nowDate = new Date().toISOString().slice(0, 10);
   const [text, setText] = useState("");
   const [date, setDate] = useState(nowDate);
-  const [open, setOpen] = React.useState(false);
-  const [openEdit, setOpenEdit] = React.useState(false);
   const [idEdit, setIdEdit] = useState(0);
+  const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState({ [idEdit]: false });
   const [statusEdit, setStatusEdit] = useState("");
   const [Cards, setCards] = useState([
     { id: 0, description: "", status: "", dueDate: "" },
@@ -77,12 +77,10 @@ export const AllInOneContainer = () => {
   const handleOpen = () => {
     setOpen(true);
     setDate(nowDate);
-    console.log("Open");
   };
   const handleClose = () => {
     setText("");
     setOpen(false);
-    console.log("Close");
   };
   const handleCloseOk = () => {
     SingleCard = {
@@ -97,14 +95,12 @@ export const AllInOneContainer = () => {
 
     setDate("");
     setOpen(false);
-    console.log("CloseOk");
   };
 
   // ---------------------
   const handleCloseEdit = () => {
     setText("");
-    setOpenEdit(false);
-    console.log("CloseEdit");
+    setOpenEdit({ [idEdit]: false });
   };
   const handleOpenEdit = (id) => {
     for (const x of Cards) {
@@ -116,8 +112,7 @@ export const AllInOneContainer = () => {
         break;
       }
     }
-    setOpenEdit(true);
-    console.log("OpenEdit");
+    setOpenEdit({ [id]: true });
   };
 
   const handleCloseOkEdit = () => {
@@ -141,8 +136,7 @@ export const AllInOneContainer = () => {
     }
     setText("");
     setDate("");
-    setOpenEdit(false);
-    console.log("CloseOkEdit");
+    setOpenEdit({ [idEdit]: false });
   };
 
   // const handleOpenChild = (id, edit) => {

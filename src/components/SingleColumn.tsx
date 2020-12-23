@@ -3,12 +3,9 @@ import {
   Card,
   CardActions,
   CardContent,
-  createStyles,
   Fab,
   Grid,
-  makeStyles,
   Paper,
-  Theme,
   Typography,
 } from "@material-ui/core";
 import React from "react";
@@ -98,7 +95,7 @@ export const SingleColumn = ({
                       <Box p={1}>
                         {/* //Modal Edit---------------------- */}
                         <AddItemModal
-                          open={open}
+                          open={open[item.id]}
                           handleClose={handleClose}
                           text={text}
                           handleChangeText={handleChangeText}

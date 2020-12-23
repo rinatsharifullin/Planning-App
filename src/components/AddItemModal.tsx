@@ -57,6 +57,8 @@ export const AddItemModal = ({
 
   const classes = useStyles();
 
+  if (open === undefined) open = false;
+
   return (
     <div>
       <Fab
