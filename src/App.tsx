@@ -1,5 +1,5 @@
 import React from "react";
-import { AllInOneContainer } from "./components/AllInOneNew";
+import AllInOneContainer from "./components/PlanningApp";
 
 function App() {
   return (
