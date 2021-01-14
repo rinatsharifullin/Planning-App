@@ -16,13 +16,11 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { useState } from "react";
-import AddIcon from "@material-ui/icons/Add";
 import EditIcon from "@material-ui/icons/Edit";
 import { connect } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import * as action from "../../../actions/actions";
 import * as service from "../../../actions/services";
-import { store } from "../../..";
 import { CardType } from "../../PlanningApp";
 import { AppState } from "../../../reducer/reducer";
 

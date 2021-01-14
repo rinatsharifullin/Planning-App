@@ -14,10 +14,10 @@ import {
   Switch,
   TextField,
   Theme,
+  Tooltip,
 } from "@material-ui/core";
 import React, { useState } from "react";
 import AddIcon from "@material-ui/icons/Add";
-import EditIcon from "@material-ui/icons/Edit";
 import { ThunkDispatch } from "redux-thunk";
 import * as action from "../../../actions/actions";
 import * as service from "../../../actions/services";
@@ -85,14 +85,16 @@ const ModalCard = ({ setCard, changeTeam, getTodoList }) => {
   };
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
-      <Fab
-        size="small"
-        color={"primary"}
-        aria-label="edit"
-        onClick={() => handleOpen()}
-      >
-        <AddIcon />
-      </Fab>
+      <Tooltip title="Add" placement="right">
+        <Fab
+          size="small"
+          color={"primary"}
+          aria-label="edit"
+          onClick={() => handleOpen()}
+        >
+          <AddIcon />
+        </Fab>
+      </Tooltip>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -146,13 +148,15 @@ const ModalCard = ({ setCard, changeTeam, getTodoList }) => {
           {/* Card in Modal----------------------- */}
         </Fade>
       </Modal>
-      <FormControlLabel
-        value="team"
-        onChange={handleChange}
-        control={<Switch color="primary" />}
-        label="BT  GT"
-        labelPlacement="top"
-      />
+      <Tooltip title="Teams" placement="left">
+        <FormControlLabel
+          value="team"
+          onChange={handleChange}
+          control={<Switch color="primary" />}
+          label="BT  GT"
+          labelPlacement="top"
+        />
+      </Tooltip>
     </div>
   );
 };
